@@ -16,7 +16,7 @@ export const NavItem = forwardRef<HTMLAnchorElement, NavItemProps>(
       aria-current={isActive ? 'page' : undefined}
       title={isCollapsed ? label : undefined}
       className={[
-        'flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium',
+        'flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium cursor-pointer',
         'transition-[background-color,color] duration-[var(--transition-fast)]',
         'focus-visible:outline-none focus-visible:shadow-glow-brand',
         isActive

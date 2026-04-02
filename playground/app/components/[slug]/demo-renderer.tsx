@@ -9,6 +9,12 @@ export function DemoRenderer({ componentName }: { componentName: string }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectValue, setSelectValue] = useState<string>('');
   const [multiSelectValue, setMultiSelectValue] = useState<string[]>([]);
+  const [dateValue, setDateValue] = useState<Date | undefined>();
+  const [timeValue, setTimeValue] = useState<string | undefined>();
+  const [dateTimeValue, setDateTimeValue] = useState<Date | undefined>();
+  const [dateRangeValue, setDateRangeValue] = useState<NexusUI.DateRange>({ start: undefined, end: undefined });
+  const [dateTimeRangeValue, setDateTimeRangeValue] = useState<NexusUI.DateRange>({ start: undefined, end: undefined });
+  const [timeRangeValue, setTimeRangeValue] = useState<NexusUI.TimeRange>({ start: undefined, end: undefined });
   const { toast } = NexusUI.useToast();
 
   switch (componentName) {
@@ -255,6 +261,133 @@ export function DemoRenderer({ componentName }: { componentName: string }) {
                 { id: '3', name: 'Carlos Alves', role: 'Vendedor' }
               ]}
            />
+        </div>
+      );
+    case 'DatePicker':
+      return (
+        <div className="w-full max-w-sm space-y-4">
+          <NexusUI.DatePicker
+            label="Data de nascimento"
+            placeholder="DD/MM/AAAA"
+            value={dateValue}
+            onChange={setDateValue}
+          />
+          <NexusUI.DatePicker
+            label="Com erro"
+            error="Data inválida."
+            value={undefined}
+            onChange={() => {}}
+          />
+          <NexusUI.DatePicker
+            label="Desabilitado"
+            disabled
+            value={new Date()}
+            onChange={() => {}}
+          />
+          {dateValue && (
+            <p className="text-xs text-[var(--color-text-muted)]">
+              Selecionado: {dateValue.toLocaleDateString('pt-BR')}
+            </p>
+          )}
+        </div>
+      );
+    case 'TimePicker':
+      return (
+        <div className="w-full max-w-sm space-y-4">
+          <NexusUI.TimePicker
+            label="Horário de início"
+            value={timeValue}
+            onChange={setTimeValue}
+          />
+          <NexusUI.TimePicker
+            label="Intervalo de 15 min"
+            minuteStep={15}
+            value={timeValue}
+            onChange={setTimeValue}
+            helperText="Minutos em intervalos de 15"
+          />
+          {timeValue && (
+            <p className="text-xs text-[var(--color-text-muted)]">
+              Selecionado: {timeValue}
+            </p>
+          )}
+        </div>
+      );
+    case 'DateTimePicker':
+      return (
+        <div className="w-full max-w-sm space-y-4">
+          <NexusUI.DateTimePicker
+            label="Data e hora do evento"
+            value={dateTimeValue}
+            onChange={setDateTimeValue}
+          />
+          <NexusUI.DateTimePicker
+            label="Com intervalo de 30 min"
+            minuteStep={30}
+            value={dateTimeValue}
+            onChange={setDateTimeValue}
+            helperText="Minutos em intervalos de 30"
+          />
+          {dateTimeValue && (
+            <p className="text-xs text-[var(--color-text-muted)]">
+              Selecionado: {dateTimeValue.toLocaleString('pt-BR')}
+            </p>
+          )}
+        </div>
+      );
+    case 'DateRangePicker':
+      return (
+        <div className="w-full max-w-sm space-y-4">
+          <NexusUI.DateRangePicker
+            label="Período da viagem"
+            value={dateRangeValue}
+            onChange={setDateRangeValue}
+          />
+          {(dateRangeValue.start ?? dateRangeValue.end) && (
+            <p className="text-xs text-[var(--color-text-muted)]">
+              De: {dateRangeValue.start?.toLocaleDateString('pt-BR') ?? '—'}&nbsp;
+              Até: {dateRangeValue.end?.toLocaleDateString('pt-BR') ?? '—'}
+            </p>
+          )}
+        </div>
+      );
+    case 'DateTimeRangePicker':
+      return (
+        <div className="w-full max-w-sm space-y-4">
+          <NexusUI.DateTimeRangePicker
+            label="Período do evento"
+            value={dateTimeRangeValue}
+            onChange={setDateTimeRangeValue}
+            minuteStep={15}
+          />
+          {(dateTimeRangeValue.start ?? dateTimeRangeValue.end) && (
+            <p className="text-xs text-[var(--color-text-muted)]">
+              De: {dateTimeRangeValue.start?.toLocaleString('pt-BR') ?? '—'}&nbsp;
+              Até: {dateTimeRangeValue.end?.toLocaleString('pt-BR') ?? '—'}
+            </p>
+          )}
+        </div>
+      );
+    case 'TimeRangePicker':
+      return (
+        <div className="w-full max-w-sm space-y-4">
+          <NexusUI.TimeRangePicker
+            label="Horário do expediente"
+            value={timeRangeValue}
+            onChange={setTimeRangeValue}
+          />
+          <NexusUI.TimeRangePicker
+            label="Intervalo de 30 min"
+            minuteStep={30}
+            value={timeRangeValue}
+            onChange={setTimeRangeValue}
+            helperText="Minutos em intervalos de 30"
+          />
+          {(timeRangeValue.start ?? timeRangeValue.end) && (
+            <p className="text-xs text-[var(--color-text-muted)]">
+              De: {timeRangeValue.start ?? '—'}&nbsp; Até: {timeRangeValue.end ?? '—'}
+            </p>
+          )}
         </div>
       );
     default:

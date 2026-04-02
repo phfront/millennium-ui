@@ -32,7 +32,7 @@ export const BottomNav = forwardRef<HTMLElement, BottomNavProps>(
           aria-current={item.isActive ? 'page' : undefined}
           aria-label={item.label}
           className={[
-            'flex-1 flex flex-col items-center gap-1 py-3 px-2',
+            'flex-1 flex flex-col items-center gap-1 py-3 px-2 cursor-pointer',
             'text-xs font-medium transition-colors duration-[var(--transition-fast)]',
             'focus-visible:outline-none focus-visible:bg-surface-3',
             item.isActive ? 'text-brand-primary' : 'text-text-muted hover:text-text-secondary',

@@ -75,7 +75,11 @@ export const ModuleCard = forwardRef<HTMLDivElement, ModuleCardProps>(
     );
 
     if (href && !isDisabled) {
-      return <a href={href} className="block no-underline" tabIndex={0}>{inner}</a>;
+      return (
+        <a href={href} className="block no-underline cursor-pointer" tabIndex={0}>
+          {inner}
+        </a>
+      );
     }
 
     return inner;

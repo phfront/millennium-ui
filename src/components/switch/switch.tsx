@@ -5,10 +5,16 @@ import React, { forwardRef, useId } from 'react';
 export interface SwitchProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type' | 'role'> {
   label?: string;
   description?: string;
+  /** Callback com o valor booleano já extraído (alternativa ao onChange nativo). */
+  onCheckedChange?: (checked: boolean) => void;
 }
 
 export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
-  ({ label, description, id: externalId, className = '', disabled, ...props }, ref) => {
+  ({ label, description, id: externalId, className = '', disabled, onCheckedChange, onChange, ...props }, ref) => {
+    function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+      onChange?.(e);
+      onCheckedChange?.(e.target.checked);
+    }
     const generatedId = useId();
     const id = externalId ?? generatedId;
 
@@ -29,6 +35,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
             role="switch"
             disabled={disabled}
             className="sr-only peer"
+            onChange={handleChange}
             {...props}
           />
           <div

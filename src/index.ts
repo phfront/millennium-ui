@@ -29,6 +29,25 @@ export type { DividerProps, DividerOrientation } from './components/divider/divi
 export { Switch } from './components/switch/switch';
 export type { SwitchProps } from './components/switch/switch';
 
+export {
+  DatePicker,
+  TimePicker,
+  DateTimePicker,
+  DateRangePicker,
+  DateTimeRangePicker,
+  TimeRangePicker,
+} from './components/date-picker/date-picker';
+export type {
+  DateRange,
+  TimeRange,
+  DatePickerProps,
+  TimePickerProps,
+  DateTimePickerProps,
+  DateRangePickerProps,
+  DateTimeRangePickerProps,
+  TimeRangePickerProps,
+} from './components/date-picker/date-picker';
+
 // ── Layout ─────────────────────────────────────────────────────────────────
 export { Card } from './components/card/card';
 export type { CardProps } from './components/card/card';

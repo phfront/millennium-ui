@@ -24,6 +24,12 @@ export const componentsRegistry: ComponentEntry[] = [
   { slug: 'spinner', name: 'Spinner', description: 'Indicador de carregamento animado.', category: 'Atoms' },
   { slug: 'switch', name: 'Switch', description: 'Toggle booleano acessível.', category: 'Atoms' },
   { slug: 'divider', name: 'Divider', description: 'Linha separadora horizontal ou vertical.', category: 'Atoms' },
+  { slug: 'date-picker', name: 'DatePicker', description: 'Seletor de data com calendário interativo.', category: 'Atoms' },
+  { slug: 'time-picker', name: 'TimePicker', description: 'Seletor de horário com colunas de hora e minuto.', category: 'Atoms' },
+  { slug: 'date-time-picker', name: 'DateTimePicker', description: 'Seletor de data e hora combinados.', category: 'Atoms' },
+  { slug: 'date-range-picker', name: 'DateRangePicker', description: 'Seletor de intervalo de datas com dois calendários.', category: 'Atoms' },
+  { slug: 'date-time-range-picker', name: 'DateTimeRangePicker', description: 'Seletor de intervalo com data e hora de início/fim.', category: 'Atoms' },
+  { slug: 'time-range-picker', name: 'TimeRangePicker', description: 'Seletor de intervalo de horários com abas início/fim.', category: 'Atoms' },
   // Layout
   { slug: 'card', name: 'Card', description: 'Container com Header, Body e Footer.', category: 'Layout' },
   { slug: 'page-header', name: 'PageHeader', description: 'Cabeçalho de página com título e ações.', category: 'Layout' },

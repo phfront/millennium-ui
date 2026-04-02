@@ -79,15 +79,15 @@ export const nexusUiPreset = {
           '50%': { boxShadow: '0 0 0 8px rgba(139,92,246,0)' },
         },
         'skeleton-shimmer': {
-          '0%': { backgroundPosition: '-200% 0' },
-          '100%': { backgroundPosition: '200% 0' },
+          '0%': { backgroundPosition: '-300% 0' },
+          '100%': { backgroundPosition: '300% 0' },
         },
       },
       animation: {
         'fade-in': 'fade-in var(--transition-base) ease both',
         'slide-up': 'slide-up var(--transition-base) ease both',
         'pulse-glow': 'pulse-glow 2s ease infinite',
-        'skeleton-shimmer': 'skeleton-shimmer 1.5s linear infinite',
+        'skeleton-shimmer': 'skeleton-shimmer 1.8s ease-in-out infinite',
         spin: 'spin 0.8s linear infinite',
       },
     },
