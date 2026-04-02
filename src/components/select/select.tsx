@@ -16,6 +16,7 @@ export interface SelectProps {
   searchable?: boolean;
   placeholder?: string;
   label?: string;
+  helperText?: string;
   error?: string;
   disabled?: boolean;
   className?: string;
@@ -29,6 +30,7 @@ export function Select({
   searchable = false,
   placeholder = 'Selecione...',
   label,
+  helperText,
   error,
   disabled = false,
   className = '',
@@ -139,8 +141,11 @@ export function Select({
         />
       </div>
 
-      {/* Error Message */}
-      {error && <p className="mt-1.5 text-xs text-danger">{error}</p>}
+      {error ? (
+        <p className="mt-1.5 text-xs text-danger">{error}</p>
+      ) : helperText ? (
+        <p className="mt-1.5 text-xs text-text-muted">{helperText}</p>
+      ) : null}
 
       {/* Dropdown Menu */}
       {isOpen && (

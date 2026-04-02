@@ -3,7 +3,7 @@
 import React, { forwardRef, useId, useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 
-export type InputType = 'text' | 'email' | 'password' | 'number' | 'search' | 'url' | 'tel';
+export type InputType = 'text' | 'email' | 'password' | 'number' | 'search' | 'url' | 'tel' | 'date';
 
 export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {
   label?: string;
