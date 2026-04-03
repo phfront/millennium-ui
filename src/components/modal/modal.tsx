@@ -125,7 +125,7 @@ function ModalRoot({ isOpen, onClose, title, size = 'md', children, className = 
             </button>
           </div>
         )}
-        {children}
+        <div className="px-6 py-5 overflow-y-auto max-h-[min(75vh,36rem)]">{children}</div>
       </div>
     </div>
   );

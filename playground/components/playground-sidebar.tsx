@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { categories, getByCategory } from '../data/components-registry';
-import { Search, ChevronDown, ChevronRight, Palette } from 'lucide-react';
+import { Search, ChevronDown, ChevronRight, Palette, Droplets } from 'lucide-react';
 
 export function PlaygroundSidebar() {
   const pathname = usePathname();
@@ -41,7 +41,7 @@ export function PlaygroundSidebar() {
         <Link
           href="/tokens"
           className={[
-            'flex items-center gap-2 px-3 py-2 rounded-md text-xs font-medium mb-2',
+            'flex items-center gap-2 px-3 py-2 rounded-md text-xs font-medium mb-1',
             'transition-colors',
             pathname === '/tokens'
               ? 'bg-[var(--color-brand-primary)]/10 text-[var(--color-brand-primary)]'
@@ -50,6 +50,20 @@ export function PlaygroundSidebar() {
         >
           <Palette size={14} />
           Design Tokens
+        </Link>
+
+        <Link
+          href="/color-lab"
+          className={[
+            'flex items-center gap-2 px-3 py-2 rounded-md text-xs font-medium mb-2',
+            'transition-colors',
+            pathname === '/color-lab'
+              ? 'bg-[var(--color-brand-primary)]/10 text-[var(--color-brand-primary)]'
+              : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-3)] hover:text-[var(--color-text-primary)]',
+          ].join(' ')}
+        >
+          <Droplets size={14} />
+          Laboratório de cores
         </Link>
 
         <div className="h-px bg-[var(--color-border)] mb-3" />

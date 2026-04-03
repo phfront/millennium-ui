@@ -15,7 +15,58 @@ export function DemoRenderer({ componentName }: { componentName: string }) {
   const [dateRangeValue, setDateRangeValue] = useState<NexusUI.DateRange>({ start: undefined, end: undefined });
   const [dateTimeRangeValue, setDateTimeRangeValue] = useState<NexusUI.DateRange>({ start: undefined, end: undefined });
   const [timeRangeValue, setTimeRangeValue] = useState<NexusUI.TimeRange>({ start: undefined, end: undefined });
+  const [stepperValue, setStepperValue] = useState('70.0');
+  const [linePeriod, setLinePeriod] = useState('all');
+  const [matrixAllowed, setMatrixAllowed] = useState(() => new Set(['u1|m1', 'u1|m2', 'u2|m1']));
+  const [completionDone, setCompletionDone] = useState(false);
+  const [checklistState, setChecklistState] = useState([false, true, false]);
+  const [intSliderVal, setIntSliderVal] = useState(3);
+  const [holdStepperVal, setHoldStepperVal] = useState(2);
+  const [heatmapMonth, setHeatmapMonth] = useState(() => new Date(2026, 3, 1));
+  const [monthStepIdx, setMonthStepIdx] = useState(2);
+  const [inlineAmountDemo, setInlineAmountDemo] = useState(1234.56);
+  const [toggleBadgePaid, setToggleBadgePaid] = useState(false);
+  const [compactStatusChecked, setCompactStatusChecked] = useState(true);
   const { toast } = NexusUI.useToast();
+
+  function matrixKey(rowId: string, colId: string) {
+    return `${rowId}|${colId}`;
+  }
+
+  function demoHeatmapData(month: Date): NexusUI.CalendarHeatmapDay[] {
+    const y = month.getFullYear();
+    const m = month.getMonth();
+    const days = new Date(y, m + 1, 0).getDate();
+    return Array.from({ length: days }, (_, i) => {
+      const day = i + 1;
+      const dateStr = `${y}-${String(m + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+      const percent = Math.min(100, (i * 17) % 100);
+      return {
+        date: dateStr,
+        percent,
+        pointsEarned: Math.round(percent / 12),
+        pointsMax: 10,
+        pointsPercent: percent,
+      };
+    });
+  }
+
+  const heatmapNow = new Date();
+  const isHeatmapCurrentMonth =
+    heatmapMonth.getFullYear() === heatmapNow.getFullYear() && heatmapMonth.getMonth() === heatmapNow.getMonth();
+
+  const lineChartDemoData =
+    linePeriod === 'all'
+      ? [
+          { m: 'Jan', v1: 40, v2: 28 },
+          { m: 'Fev', v1: 38, v2: 30 },
+          { m: 'Mar', v1: 35, v2: 32 },
+          { m: 'Abr', v1: 33, v2: 31 },
+        ]
+      : [
+          { m: 'Mar', v1: 35, v2: 32 },
+          { m: 'Abr', v1: 33, v2: 31 },
+        ];
 
   switch (componentName) {
     case 'Button':
@@ -96,10 +147,16 @@ export function DemoRenderer({ componentName }: { componentName: string }) {
       );
     case 'Icon':
       return (
-        <div className="flex items-center gap-4 text-[var(--color-brand-primary)]">
-          <NexusUI.Icon name="Activity" size={24} />
-          <NexusUI.Icon name="AlertCircle" size={24} className="text-[var(--color-danger)]" />
-          <NexusUI.Icon name="CheckCircle2" size={24} className="text-[var(--color-success)]" />
+        <div className="flex flex-col gap-4">
+          <div className="flex items-center gap-4 text-[var(--color-brand-primary)]">
+            <NexusUI.Icon name="Activity" size={24} />
+            <NexusUI.Icon name="CircleAlert" size={24} className="text-[var(--color-danger)]" />
+            <NexusUI.Icon name="CircleCheck" size={24} className="text-[var(--color-success)]" />
+          </div>
+          <p className="text-xs text-[var(--color-text-muted)]">
+            Nome inválido com fallback:{' '}
+            <NexusUI.Icon name="IconeInexistente" fallbackName="Box" size={24} className="inline-block align-middle" />
+          </p>
         </div>
       );
     case 'Spinner':
@@ -166,6 +223,88 @@ export function DemoRenderer({ componentName }: { componentName: string }) {
             <NexusUI.Skeleton className="w-[80%] h-4" />
             <NexusUI.Skeleton className="w-[50%] h-3" />
           </div>
+        </div>
+      );
+    case 'StatCard':
+      return (
+        <div className="grid grid-cols-2 gap-3 w-full max-w-lg">
+          <NexusUI.StatCard label="Receita" value="R$ 12.450" sub="mês atual" valueTone="positive" />
+          <NexusUI.StatCard label="Churn" value="2,1%" valueTone="negative" />
+          <NexusUI.StatCard label="Meta" value="87%" valueTone="muted" />
+          <NexusUI.StatCard
+            label="A carregar"
+            value="—"
+            valueTone="default"
+            isLoading
+            valueSize="md"
+            icon={<NexusUI.Icon name="Wallet" className="size-4" />}
+          />
+        </div>
+      );
+    case 'RangeProgressBar':
+      return (
+        <div className="w-full max-w-md">
+          <NexusUI.RangeProgressBar
+            percent={62.5}
+            startLabel="Início"
+            endLabel="Objetivo"
+            currentLabel="Agora"
+            formatFooter={(p) => `${p.toFixed(1)}% concluído`}
+          />
+        </div>
+      );
+    case 'DeltaBadge':
+      return (
+        <div className="flex flex-wrap gap-2 items-center">
+          <NexusUI.DeltaBadge delta={-1.2} unit="kg" suffix="vs. anterior" invertSemantics />
+          <NexusUI.DeltaBadge delta={0.5} unit="kg" invertSemantics />
+          <NexusUI.DeltaBadge delta={2} unit="%" />
+          <NexusUI.DeltaBadge delta={null} />
+        </div>
+      );
+    case 'StepperField':
+      return (
+        <div className="w-full max-w-xs">
+          <NexusUI.StepperField
+            value={stepperValue}
+            onChange={setStepperValue}
+            label="Valor"
+            suffix="kg"
+            decrementAriaLabel="Diminuir"
+            incrementAriaLabel="Aumentar"
+          />
+        </div>
+      );
+    case 'LineChartPanel':
+      return (
+        <div className="w-full max-w-2xl">
+          <NexusUI.LineChartPanel
+            data={lineChartDemoData}
+            xDataKey="m"
+            series={[
+              {
+                dataKey: 'v1',
+                name: 'Principal',
+                color: 'var(--color-brand-primary)',
+                dot: { r: 3, fill: 'var(--color-brand-primary)' },
+              },
+              {
+                dataKey: 'v2',
+                name: 'Comparativo',
+                color: 'var(--color-brand-secondary, #a855f7)',
+                dot: false,
+                connectNulls: true,
+              },
+            ]}
+            referenceLines={[{ y: 36, stroke: 'var(--color-success)', strokeDasharray: '4 4' }]}
+            height={260}
+            periods={[
+              { id: 'all', label: 'Tudo' },
+              { id: 'recent', label: 'Recente' },
+            ]}
+            selectedPeriodId={linePeriod}
+            onPeriodChange={setLinePeriod}
+          />
         </div>
       );
     case 'Alert':
@@ -243,6 +382,56 @@ export function DemoRenderer({ componentName }: { componentName: string }) {
             icon={<Settings size={24} />}
             href="#"
             status="beta"
+          />
+        </div>
+      );
+    case 'ModuleCardSkeleton':
+      return (
+        <div className="w-full max-w-3xl space-y-6">
+          <NexusUI.ModuleCardSkeleton className="max-w-sm" />
+          <NexusUI.ModuleGridSkeleton count={3} />
+        </div>
+      );
+    case 'ToggleMatrix':
+      return (
+        <div className="w-full max-w-3xl">
+          <NexusUI.ToggleMatrix
+            cornerHeader="Recurso"
+            rows={[
+              { id: 'u1', header: <span className="font-medium text-[var(--color-text-primary)]">Ana</span> },
+              { id: 'u2', header: <span className="font-medium text-[var(--color-text-primary)]">Bruno</span> },
+            ]}
+            columns={[
+              {
+                id: 'm1',
+                header: (
+                  <div className="flex flex-col items-center gap-1">
+                    <span className="text-xs text-[var(--color-text-primary)]">CRM</span>
+                    <span className="text-[10px] font-mono text-[var(--color-text-muted)]">crm</span>
+                  </div>
+                ),
+              },
+              {
+                id: 'm2',
+                header: (
+                  <div className="flex flex-col items-center gap-1">
+                    <span className="text-xs text-[var(--color-text-primary)]">Health</span>
+                    <span className="text-[10px] font-mono text-[var(--color-text-muted)]">health</span>
+                  </div>
+                ),
+              },
+            ]}
+            isChecked={(rowId, colId) => matrixAllowed.has(matrixKey(rowId, colId))}
+            onCheckedChange={(rowId, colId, checked) => {
+              const k = matrixKey(rowId, colId);
+              setMatrixAllowed((prev) => {
+                const n = new Set(prev);
+                if (checked) n.add(k);
+                else n.delete(k);
+                return n;
+              });
+            }}
+            footer={<p className="p-3 text-xs text-[var(--color-text-muted)]">Exemplo de matriz de permissões.</p>}
           />
         </div>
       );
@@ -389,6 +578,133 @@ export function DemoRenderer({ componentName }: { componentName: string }) {
             </p>
           )}
         </div>
+      );
+    case 'CircularProgress':
+      return (
+        <div className="flex gap-6 items-center">
+          <NexusUI.CircularProgress value={7} max={10} size={64} />
+          <NexusUI.CircularProgress value={40} max={100} />
+        </div>
+      );
+    case 'StreakBadge':
+      return (
+        <div className="flex flex-wrap gap-4 items-center">
+          <NexusUI.StreakBadge count={5} />
+          <NexusUI.StreakBadge count={0} hideWhenZero={false} suffix="days" />
+        </div>
+      );
+    case 'CompletionToggle':
+      return (
+        <div className="max-w-sm w-full">
+          <NexusUI.CompletionToggle
+            checked={completionDone}
+            onCheckedChange={setCompletionDone}
+            labelOn="Concluído!"
+            labelOff="Marcar como feito"
+          />
+        </div>
+      );
+    case 'Checklist':
+      return (
+        <div className="max-w-md w-full">
+          <NexusUI.Checklist
+            items={[
+              { label: 'Item com bónus', points: 1 },
+              { label: 'Item com penalização', points: -1 },
+              { label: 'Sem pontos' },
+            ]}
+            checked={checklistState}
+            onToggle={(i, v) => {
+              setChecklistState((prev) => {
+                const n = [...prev];
+                n[i] = v;
+                return n;
+              });
+            }}
+          />
+        </div>
+      );
+    case 'IntegerSlider':
+      return (
+        <div className="max-w-sm w-full">
+          <NexusUI.IntegerSlider value={intSliderVal} max={10} unit="km" onChange={setIntSliderVal} />
+        </div>
+      );
+    case 'HoldStepper':
+      return (
+        <div className="max-w-xs w-full">
+          <NexusUI.HoldStepper value={holdStepperVal} max={8} unit="un" onChange={setHoldStepperVal} />
+        </div>
+      );
+    case 'CalendarHeatmap':
+      return (
+        <div className="w-full max-w-md">
+          <NexusUI.CalendarHeatmap
+            data={demoHeatmapData(heatmapMonth)}
+            month={heatmapMonth}
+            onPrevMonth={() => setHeatmapMonth((d) => new Date(d.getFullYear(), d.getMonth() - 1, 1))}
+            onNextMonth={() => setHeatmapMonth((d) => new Date(d.getFullYear(), d.getMonth() + 1, 1))}
+            isCurrentMonth={isHeatmapCurrentMonth}
+          />
+        </div>
+      );
+    case 'MonthStepper': {
+      const labels = ['Janeiro 2024', 'Fevereiro 2024', 'Março 2024', 'Abril 2024'];
+      return (
+        <NexusUI.MonthStepper
+          label={labels[monthStepIdx]}
+          onPrev={() => setMonthStepIdx((i) => Math.max(0, i - 1))}
+          onNext={() => setMonthStepIdx((i) => Math.min(labels.length - 1, i + 1))}
+          disableNext={monthStepIdx >= labels.length - 1}
+        />
+      );
+    }
+    case 'InlineAmountCell':
+      return (
+        <div className="w-36">
+          <NexusUI.InlineAmountCell
+            value={inlineAmountDemo}
+            onSave={(v) => setInlineAmountDemo(v)}
+            formatDisplay={(n) =>
+              new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(n)
+            }
+            parseInput={(raw) => {
+              const cleaned = raw.replace(/[^\d,.-]/g, '').replace(',', '.');
+              const x = parseFloat(cleaned);
+              return Number.isNaN(x) ? 0 : x;
+            }}
+            highlightVariant="success"
+            highlightActive={inlineAmountDemo > 2000}
+          />
+        </div>
+      );
+    case 'ToggleStatusBadge':
+      return (
+        <div className="flex flex-wrap gap-3 items-center">
+          <NexusUI.ToggleStatusBadge
+            checked={toggleBadgePaid}
+            onToggle={() => setToggleBadgePaid((p) => !p)}
+          />
+          <NexusUI.ToggleStatusBadge
+            checked={false}
+            checkedLabel="OK"
+            uncheckedLabel="Falta"
+            showIconWhenChecked={false}
+            onToggle={() => {
+              toast.info('Demo', 'Estado visual fixo; o clique mostra toast.');
+            }}
+          />
+        </div>
+      );
+    case 'CompactStatusCheckbox':
+      return (
+        <label className="inline-flex items-center gap-2 text-sm text-[var(--color-text-secondary)] cursor-pointer">
+          <NexusUI.CompactStatusCheckbox
+            checked={compactStatusChecked}
+            onCheckedChange={() => setCompactStatusChecked((c) => !c)}
+          />
+          Checkbox compacto
+        </label>
       );
     default:
       return (

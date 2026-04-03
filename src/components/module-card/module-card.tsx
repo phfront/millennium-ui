@@ -6,7 +6,7 @@ export interface ModuleCardProps extends React.HTMLAttributes<HTMLDivElement> {
   icon: React.ReactNode;
   label: string;
   description?: string;
-  status?: 'active' | 'soon' | 'beta';
+  status?: 'active' | 'soon' | 'beta' | 'locked';
   href?: string;
   isDisabled?: boolean;
 }
@@ -15,6 +15,7 @@ const statusConfig: Record<string, { label: string; variant: BadgeVariant }> = {
   active: { label: 'Ativo', variant: 'success' },
   soon: { label: 'Em breve', variant: 'muted' },
   beta: { label: 'Beta', variant: 'info' },
+  locked: { label: 'Sem acesso', variant: 'warning' },
 };
 
 export const ModuleCard = forwardRef<HTMLDivElement, ModuleCardProps>(
