@@ -1,5 +1,5 @@
 import type { Config } from 'tailwindcss';
-import { nexusUiPreset } from '@nexus/ui/tailwind-preset';
+import { nexusUiPreset } from '@phfront/ui/tailwind-preset';
 
 const config: Config = {
   presets: [nexusUiPreset],

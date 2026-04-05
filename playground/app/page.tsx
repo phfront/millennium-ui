@@ -124,7 +124,7 @@ export default function HomePage() {
             1. Tailwind Config
           </div>
           <pre className="p-5 text-sm overflow-x-auto text-[var(--color-text-primary)]">
-            <code className="text-[#c678dd]">import</code> <span className="text-[#e5c07b]">{`{ nexusUiPreset }`}</span> <code className="text-[#c678dd]">from</code> <span className="text-[#98c379]">'@nexus/ui/tailwind-preset'</span>;<br /><br />
+            <code className="text-[#c678dd]">import</code> <span className="text-[#e5c07b]">{`{ nexusUiPreset }`}</span> <code className="text-[#c678dd]">from</code> <span className="text-[#98c379]">'@phfront/ui/tailwind-preset'</span>;<br /><br />
             <code className="text-[#c678dd]">export default</code> {'{\n'}
             {'  '}presets: <span className="text-[#61afef]">[nexusUiPreset]</span>,<br />
             {'  '}content: <span className="text-[#61afef]">['./src/**/*.{"{ts,tsx}"}']</span><br />
@@ -137,7 +137,7 @@ export default function HomePage() {
             2. Importando Componentes
           </div>
           <pre className="p-5 text-sm overflow-x-auto text-[var(--color-text-primary)]">
-            <code className="text-[#c678dd]">import</code> <span className="text-[#e5c07b]">{`{ Button, Card, Badge }`}</span> <code className="text-[#c678dd]">from</code> <span className="text-[#98c379]">'@nexus/ui'</span>;<br /><br />
+            <code className="text-[#c678dd]">import</code> <span className="text-[#e5c07b]">{`{ Button, Card, Badge }`}</span> <code className="text-[#c678dd]">from</code> <span className="text-[#98c379]">'@phfront/ui'</span>;<br /><br />
             <code className="text-[#e06c75]">{`<Card>`}</code><br />
             {'  '}<code className="text-[#e06c75]">{`<Card.Body>`}</code><br />
             {'    '}<code className="text-[#e06c75]">{`<Badge`}</code> <span className="text-[#d19a66]">variant</span>=<span className="text-[#98c379]">"success"</span><code className="text-[#e06c75]">{`>Ativo</Badge>`}</code><br />

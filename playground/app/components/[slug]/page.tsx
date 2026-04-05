@@ -6,7 +6,7 @@ import { ComponentPreview } from '../../../components/component-preview';
 import { CodeBlock } from '../../../components/code-block';
 import { PropsTable } from '../../../components/props-table';
 import { DemoRenderer } from './demo-renderer';
-import * as NexusUI from '@nexus/ui';
+import * as NexusUI from '@phfront/ui';
 
 export function generateStaticParams() {
   return componentsRegistry.map((c) => ({ slug: c.slug }));
@@ -29,7 +29,7 @@ export default async function ComponentPage({ params }: { params: Promise<{ slug
         <h1 className="text-3xl font-bold text-[var(--color-text-primary)]">{comp.name}</h1>
         <p className="text-lg text-[var(--color-text-secondary)] max-w-2xl">{comp.description}</p>
         <div className="inline-flex items-center gap-2 mt-2 px-2.5 py-1 rounded-md bg-[var(--color-surface-3)] text-[var(--color-text-muted)] text-xs font-mono border border-[var(--color-border)] shadow-sm">
-          import {`{ ${comp.name} }`} from '@nexus/ui';
+          import {`{ ${comp.name} }`} from '@phfront/ui';
         </div>
       </header>
 

@@ -2,7 +2,7 @@ import React from 'react';
 import type { Metadata } from 'next';
 import { PlaygroundSidebar } from '../components/playground-sidebar';
 import { PlaygroundHeader } from '../components/playground-header';
-import '@nexus/ui/styles';
+import '@phfront/ui/styles';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   description: 'Design System do Ecossistema Nexus',
 };
 
-import { ToastProvider } from '@nexus/ui';
+import { ToastProvider } from '@phfront/ui';
 
 export default function RootLayout({
   children,

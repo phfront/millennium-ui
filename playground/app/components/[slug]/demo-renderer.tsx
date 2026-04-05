@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import * as NexusUI from '@nexus/ui';
+import * as NexusUI from '@phfront/ui';
 import { Search, Bell, Home, Settings } from 'lucide-react';
 
 export function DemoRenderer({ componentName }: { componentName: string }) {

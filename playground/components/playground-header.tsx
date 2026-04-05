@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Moon, Sun, Hexagon, Github, Menu } from 'lucide-react';
 
-import { Button } from '@nexus/ui';
+import { Button } from '@phfront/ui';
 import { useLayoutStore } from '../store';
 
 export function PlaygroundHeader() {

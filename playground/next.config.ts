@@ -1,7 +1,7 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  transpilePackages: ['@nexus/ui'],
+  transpilePackages: ['@phfront/ui'],
 };
 
 export default nextConfig;

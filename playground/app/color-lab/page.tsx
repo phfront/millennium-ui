@@ -25,7 +25,7 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 
-import { Card, Button } from '@nexus/ui';
+import { Card, Button } from '@phfront/ui';
 
 type SwatchDef = {
   id: string;
