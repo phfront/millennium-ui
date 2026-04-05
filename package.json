@@ -1,15 +1,15 @@
 {
-  "name": "@phfront/ui",
-  "version": "0.1.5",
+  "name": "@phfront/millennium-ui",
+  "version": "0.1.6",
   "repository": {
     "type": "git",
-    "url": "https://github.com/phfront/nexus-ui.git"
+    "url": "https://github.com/phfront/millennium-ui.git"
   },
   "publishConfig": {
     "@phfront:registry": "https://npm.pkg.github.com/"
   },
   "private": false,
-  "description": "Design System do Ecossistema Nexus",
+  "description": "Design System do Ecossistema Millennium Nexus",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
