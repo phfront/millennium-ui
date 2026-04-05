@@ -9,10 +9,12 @@
   --font-sans: 'Inter', system-ui, sans-serif;
 
   /* Brand (Green & Teal) */
-  --color-brand-primary: #16a34a; /* green-600 */
-  --color-brand-primary-hover: #15803d; /* green-700 */
-  --color-brand-secondary: #0d9488; /* teal-600 */
-  --color-brand-secondary-hover: #0f766e; /* teal-700 */
+  --color-brand-primary: #006437;
+  --color-brand-primary-hover: #004b29;
+  --color-brand-primary-text: #ffffff;
+  --color-brand-secondary: #beac4d;
+  --color-brand-secondary-hover: #a19141;
+  --color-brand-secondary-text: #09090b;
 
   /* Surface (Light mode - neutral scale) */
   --color-surface-1: #ffffff;
@@ -71,10 +73,12 @@
    ========================================= */
 .dark {
   /* Brand (Green & Teal for dark mode) */
-  --color-brand-primary: #22c55e; /* green-500 */
-  --color-brand-primary-hover: #16a34a; /* green-600 */
-  --color-brand-secondary: #2dd4bf; /* teal-400 */
-  --color-brand-secondary-hover: #14b8a6; /* teal-500 */
+  --color-brand-primary: #006437;
+  --color-brand-primary-hover: #007d45;
+  --color-brand-primary-text: #ffffff;
+  --color-brand-secondary: #beac4d;
+  --color-brand-secondary-hover: #d5c786;
+  --color-brand-secondary-text: #09090b;
 
   /* Surface (Dark mode — neutral black scale) */
   --color-surface-1: #09090b; /* zinc-950 */

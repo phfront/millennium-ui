@@ -2,12 +2,14 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Moon, Sun, Hexagon, Github } from 'lucide-react';
+import { Moon, Sun, Hexagon, Github, Menu } from 'lucide-react';
 
 import { Button } from '@nexus/ui';
+import { useLayoutStore } from '../store';
 
 export function PlaygroundHeader() {
   const [isDark, setIsDark] = useState(true);
+  const toggleSidebar = useLayoutStore((s: any) => s.toggleSidebar);
 
   useEffect(() => {
     // Initialize from stored preference
@@ -48,10 +50,10 @@ export function PlaygroundHeader() {
         <Button
           variant="ghost"
           size="icon"
-          onClick={toggle}
-          aria-label={isDark ? 'Ativar modo claro' : 'Ativar modo escuro'}
+          onClick={toggleSidebar}
+          aria-label="Alternar menu lateral"
         >
-          {isDark ? <Sun size={18} /> : <Moon size={18} />}
+          <Menu size={18} />
         </Button>
       </div>
     </header>

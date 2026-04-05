@@ -72,6 +72,7 @@ export const componentsRegistry: ComponentEntry[] = [
   { slug: 'sidebar', name: 'Sidebar', description: 'Navegação lateral colapsável.', category: 'Navegação' },
   { slug: 'bottom-nav', name: 'BottomNav', description: 'Navegação inferior para mobile.', category: 'Navegação' },
   { slug: 'nav-item', name: 'NavItem', description: 'Item de link de navegação.', category: 'Navegação' },
+  { slug: 'tabs', name: 'Tabs', description: 'Componente acessível para alternância de painéis.', category: 'Navegação' },
   // Dados
   { slug: 'module-card', name: 'ModuleCard', description: 'Card de módulo do ecossistema Nexus.', category: 'Dados' },
   {

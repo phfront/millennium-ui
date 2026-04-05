@@ -41,13 +41,13 @@ const SWATCHES: SwatchDef[] = [
   { id: 'g1', label: 'Floresta', hint: 'Verde profundo', defaultHex: '#14532d', icon: TreePine, group: 'green' },
   { id: 'g2', label: 'Musgo', hint: 'Verde oliva', defaultHex: '#3f6212', icon: Leaf, group: 'green' },
   { id: 'g3', label: 'Erva', hint: 'Green 700', defaultHex: '#15803d', icon: Sprout, group: 'green' },
-  { id: 'g4', label: 'Folha', hint: 'Green 600', defaultHex: '#16a34a', icon: Flower2, group: 'green' },
+  { id: 'g4', label: 'Primária', hint: 'Brand default', defaultHex: '#006437', icon: Flower2, group: 'green' },
   { id: 'g5', label: 'Prado', hint: 'Green 500', defaultHex: '#22c55e', icon: Clover, group: 'green' },
   { id: 'g6', label: 'Menta', hint: 'Esmeralda', defaultHex: '#10b981', icon: Bug, group: 'green' },
-  { id: 'g7', label: 'Teal', hint: 'Verde-água', defaultHex: '#0d9488', icon: Droplets, group: 'green' },
+  { id: 'g7', label: 'Secundária', hint: 'Brand default', defaultHex: '#beac4d', icon: Droplets, group: 'green' },
   { id: 'g8', label: 'Limão', hint: 'Green 400', defaultHex: '#4ade80', icon: Bean, group: 'green' },
   { id: 'g9', label: 'Maçã', hint: 'Accent claro', defaultHex: '#86efac', icon: Apple, group: 'green' },
-  { id: 'g10', label: 'Onda', hint: 'Teal claro', defaultHex: '#2dd4bf', icon: Waves, group: 'green' },
+  { id: 'g10', label: 'Onda', hint: 'Brand light', defaultHex: '#d5c786', icon: Waves, group: 'green' },
   // 10 variadas
   { id: 'v1', label: 'Coral', hint: 'Quente', defaultHex: '#f97316', icon: Flame, group: 'varied' },
   { id: 'v2', label: 'Sol', hint: 'Âmbar', defaultHex: '#eab308', icon: Sun, group: 'varied' },
@@ -321,7 +321,7 @@ function AccentCard({
               onBlur={onHexBlur}
               spellCheck={false}
               className="w-full font-mono text-sm px-3 py-2 rounded-md border border-border bg-surface-1 text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary"
-              placeholder="#16a34a"
+              placeholder="#006437"
               maxLength={7}
             />
           </div>

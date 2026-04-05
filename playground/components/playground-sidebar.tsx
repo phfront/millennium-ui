@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { categories, getByCategory } from '../data/components-registry';
 import { Search, ChevronDown, ChevronRight, Palette, Droplets } from 'lucide-react';
+import { useLayoutStore } from '../store';
 
 export function PlaygroundSidebar() {
   const pathname = usePathname();
@@ -15,6 +16,10 @@ export function PlaygroundSidebar() {
 
   const toggle = (cat: string) =>
     setExpanded((prev) => ({ ...prev, [cat]: !prev[cat] }));
+
+  const sidebarOpen = useLayoutStore((s) => s.sidebarOpen);
+
+  if (!sidebarOpen) return null;
 
   return (
     <aside className="flex flex-col h-full bg-[var(--color-surface-2)] border-r border-[var(--color-border)] w-60 shrink-0">

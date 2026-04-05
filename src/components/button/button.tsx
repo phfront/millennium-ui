@@ -16,13 +16,13 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 
 const variantClasses: Record<ButtonVariant, string> = {
   primary: [
-    'bg-brand-primary text-white',
+    'bg-brand-primary text-[var(--color-brand-primary-text,white)]',
     'hover:bg-[var(--color-brand-primary-hover)]',
     'focus-visible:shadow-glow-brand',
     'disabled:opacity-50',
   ].join(' '),
   secondary: [
-    'bg-brand-secondary text-white',
+    'bg-brand-secondary text-[var(--color-brand-secondary-text,white)]',
     'hover:bg-[var(--color-brand-secondary-hover)]',
     'focus-visible:shadow-glow-brand',
     'disabled:opacity-50',

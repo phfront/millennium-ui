@@ -61,6 +61,9 @@ export type { PageHeaderProps } from './components/page-header/page-header';
 export { EmptyState } from './components/empty-state/empty-state';
 export type { EmptyStateProps } from './components/empty-state/empty-state';
 
+export { Tabs } from './components/tabs/tabs';
+export type { TabsProps, TabsListProps, TabsTriggerProps, TabsContentProps } from './components/tabs/tabs';
+
 export { Skeleton } from './components/skeleton/skeleton';
 export type { SkeletonProps, SkeletonVariant } from './components/skeleton/skeleton';
 

@@ -373,6 +373,27 @@ export function DemoRenderer({ componentName }: { componentName: string }) {
           </div>
         </div>
       );
+    case 'Tabs':
+      return (
+        <div className="w-full max-w-md">
+          <NexusUI.Tabs defaultValue="perfil" className="w-full">
+            <NexusUI.Tabs.List className="w-full grid grid-cols-3">
+              <NexusUI.Tabs.Trigger value="perfil">Perfil</NexusUI.Tabs.Trigger>
+              <NexusUI.Tabs.Trigger value="senha">Segurança</NexusUI.Tabs.Trigger>
+              <NexusUI.Tabs.Trigger value="sistema">Sistema</NexusUI.Tabs.Trigger>
+            </NexusUI.Tabs.List>
+            <NexusUI.Tabs.Content value="perfil" className="p-4 bg-[var(--color-surface-2)] rounded-lg text-sm text-[var(--color-text-secondary)]">
+              <p>Gerencie os detalhes do seu perfil público, foto e preferências de exibição do usuário.</p>
+            </NexusUI.Tabs.Content>
+            <NexusUI.Tabs.Content value="senha" className="p-4 bg-[var(--color-surface-2)] rounded-lg text-sm text-[var(--color-text-secondary)]">
+              <p>Mude sua senha, configure autenticação de dois fatores e verifique dispositivos ativos.</p>
+            </NexusUI.Tabs.Content>
+            <NexusUI.Tabs.Content value="sistema" className="p-4 bg-[var(--color-surface-2)] rounded-lg text-sm text-[var(--color-text-secondary)]">
+              <p>Configurações gerais do sistema, como fuso horário, moedas e integrações padrão.</p>
+            </NexusUI.Tabs.Content>
+          </NexusUI.Tabs>
+        </div>
+      );
     case 'ModuleCard':
       return (
         <div className="w-full max-w-sm">
