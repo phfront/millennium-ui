@@ -12,9 +12,4 @@ export default defineConfig({
   external: ['react', 'react-dom', 'tailwindcss', 'recharts'],
   treeshake: true,
   splitting: true,
-  esbuildOptions(options) {
-    options.banner = {
-      js: '"use client";',
-    };
-  },
 });
