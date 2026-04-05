@@ -67,13 +67,13 @@ export const ToggleMatrix = forwardRef<HTMLDivElement, ToggleMatrixProps>(
         >
           <thead>
             <tr className="border-b border-border bg-surface-3/50">
-              <th className="p-3 font-semibold text-text-primary sticky left-0 bg-surface-3/95 z-10 min-w-[200px]">
+              <th className="sticky left-0 z-10 min-w-[200px] border-r border-border/60 bg-surface-3/95 p-3 font-semibold text-text-primary shadow-[4px_0_14px_-6px_rgba(0,0,0,0.18)]">
                 {cornerHeader}
               </th>
               {columns.map((col) => (
                 <th
                   key={col.id}
-                  className="p-3 font-medium text-text-secondary text-center min-w-[100px] align-bottom"
+                  className="min-w-[88px] p-3 text-center align-bottom text-sm font-medium text-text-secondary md:min-w-[100px]"
                 >
                   {col.header}
                 </th>
@@ -86,7 +86,7 @@ export const ToggleMatrix = forwardRef<HTMLDivElement, ToggleMatrixProps>(
                 key={row.id}
                 className="border-b border-border last:border-0 hover:bg-surface-3/30"
               >
-                <td className="p-3 sticky left-0 bg-surface-2 z-10 border-r border-border/60">
+                <td className="sticky left-0 z-10 border-r border-border/60 bg-surface-2 p-3 shadow-[4px_0_14px_-6px_rgba(0,0,0,0.18)]">
                   {row.header}
                 </td>
                 {columns.map((col) => {
