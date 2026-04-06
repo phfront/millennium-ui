@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useRef, useEffect, useId, useCallback } from 'react';
+import React, { useState, useRef, useEffect, useId, useCallback, useLayoutEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { ChevronLeft, ChevronRight, Calendar, Clock, X, ChevronDown } from 'lucide-react';
 
 // ─── Exported Types ───────────────────────────────────────────────────────────
@@ -177,18 +178,32 @@ function isDateDisabled(date: Date, min?: Date, max?: Date): boolean {
 function useDropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
-        setIsOpen(false);
-      }
+      const t = e.target as Node;
+      if (containerRef.current?.contains(t)) return;
+      if (panelRef.current?.contains(t)) return;
+      setIsOpen(false);
     }
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  return { isOpen, setIsOpen, containerRef };
+  useEffect(() => {
+    if (!isOpen) return;
+    function handleEscape(e: KeyboardEvent) {
+      if (e.key !== 'Escape') return;
+      e.preventDefault();
+      e.stopPropagation();
+      setIsOpen(false);
+    }
+    document.addEventListener('keydown', handleEscape, true);
+    return () => document.removeEventListener('keydown', handleEscape, true);
+  }, [isOpen]);
+
+  return { isOpen, setIsOpen, containerRef, panelRef };
 }
 
 function useMonthNavigation(initial?: Date) {
@@ -307,24 +322,78 @@ function FieldWrapper({
   );
 }
 
-// ─── Dropdown (internal) ──────────────────────────────────────────────────────
+// ─── Dropdown (portal, fixed) ─────────────────────────────────────────────────
 
 interface DropdownProps {
   children: React.ReactNode;
   className?: string;
+  anchorRef: React.RefObject<HTMLDivElement | null>;
+  panelRef: React.RefObject<HTMLDivElement | null>;
+  isOpen: boolean;
 }
 
-function Dropdown({ children, className = '' }: DropdownProps) {
-  return (
+function Dropdown({ children, className = '', anchorRef, panelRef, isOpen }: DropdownProps) {
+  const [pos, setPos] = useState({ top: 0, left: 0 });
+
+  useLayoutEffect(() => {
+    if (!isOpen || !anchorRef.current) return;
+
+    const update = () => {
+      const el = anchorRef.current;
+      if (!el) return;
+      const a = el.getBoundingClientRect();
+      const gap = 4;
+      const ph = panelRef.current?.offsetHeight ?? 320;
+      const pw = panelRef.current?.offsetWidth ?? Math.max(a.width, 280);
+      let top = a.bottom + gap;
+      if (top + ph > window.innerHeight - 8 && a.top - ph - gap >= 8) {
+        top = a.top - ph - gap;
+      } else if (top + ph > window.innerHeight - 8) {
+        top = Math.max(8, window.innerHeight - ph - 8);
+      }
+      let left = a.left;
+      if (left + pw > window.innerWidth - 8) {
+        left = Math.max(8, window.innerWidth - pw - 8);
+      }
+      left = Math.max(8, left);
+      setPos({ top, left });
+    };
+
+    update();
+    const id = requestAnimationFrame(() => update());
+    window.addEventListener('scroll', update, true);
+    window.addEventListener('resize', update);
+
+    const panel = panelRef.current;
+    let resizeObserver: ResizeObserver | undefined;
+    if (panel && typeof ResizeObserver !== 'undefined') {
+      resizeObserver = new ResizeObserver(() => update());
+      resizeObserver.observe(panel);
+    }
+
+    return () => {
+      cancelAnimationFrame(id);
+      window.removeEventListener('scroll', update, true);
+      window.removeEventListener('resize', update);
+      resizeObserver?.disconnect();
+    };
+  }, [isOpen, anchorRef, panelRef]);
+
+  if (!isOpen || typeof document === 'undefined') return null;
+
+  return createPortal(
     <div
+      ref={panelRef as React.Ref<HTMLDivElement>}
       className={[
-        'absolute z-50 top-full mt-1 bg-surface-2 border border-border rounded-lg',
+        'fixed z-[100] bg-surface-2 border border-border rounded-lg',
         'shadow-[var(--shadow-md)] animate-fade-in origin-top overflow-hidden',
         className,
       ].join(' ')}
+      style={{ top: pos.top, left: pos.left }}
     >
       {children}
-    </div>
+    </div>,
+    document.body,
   );
 }
 
@@ -566,7 +635,7 @@ export function DatePicker({
   className = '',
 }: DatePickerProps) {
   const id = useId();
-  const { isOpen, setIsOpen, containerRef } = useDropdown();
+  const { isOpen, setIsOpen, containerRef, panelRef } = useDropdown();
   const { year, month, prevMonth, nextMonth } = useMonthNavigation(value);
 
   const displayValue = value ? (
@@ -590,7 +659,7 @@ export function DatePicker({
         onClear={clearable && value ? () => onChange?.(undefined) : undefined}
       />
       {isOpen && (
-        <Dropdown>
+        <Dropdown anchorRef={containerRef} panelRef={panelRef} isOpen={isOpen}>
           <CalendarGrid
             year={year}
             month={month}
@@ -625,7 +694,7 @@ export function TimePicker({
   className = '',
 }: TimePickerProps) {
   const id = useId();
-  const { isOpen, setIsOpen, containerRef } = useDropdown();
+  const { isOpen, setIsOpen, containerRef, panelRef } = useDropdown();
 
   const parsed = value ? parseTimeStr(value) : null;
   const hours = parsed?.hours ?? 0;
@@ -658,7 +727,7 @@ export function TimePicker({
         onClear={clearable && value ? () => onChange?.(undefined) : undefined}
       />
       {isOpen && (
-        <Dropdown className="w-44">
+        <Dropdown anchorRef={containerRef} panelRef={panelRef} isOpen={isOpen} className="w-44">
           <div className="px-3 py-2 text-center border-b border-border">
             <span className="text-lg font-mono font-semibold text-text-primary tracking-widest">
               {formatTimeStr(hours, minutes)}
@@ -694,7 +763,7 @@ export function DateTimePicker({
   className = '',
 }: DateTimePickerProps) {
   const id = useId();
-  const { isOpen, setIsOpen, containerRef } = useDropdown();
+  const { isOpen, setIsOpen, containerRef, panelRef } = useDropdown();
   const { year, month, prevMonth, nextMonth } = useMonthNavigation(value);
 
   const hours = value?.getHours() ?? 0;
@@ -740,7 +809,7 @@ export function DateTimePicker({
         }
       />
       {isOpen && (
-        <Dropdown>
+        <Dropdown anchorRef={containerRef} panelRef={panelRef} isOpen={isOpen}>
           <div className="flex">
             <CalendarGrid
               year={year}
@@ -789,7 +858,7 @@ export function DateRangePicker({
   className = '',
 }: DateRangePickerProps) {
   const id = useId();
-  const { isOpen, setIsOpen, containerRef } = useDropdown();
+  const { isOpen, setIsOpen, containerRef, panelRef } = useDropdown();
   const { year, month, prevMonth, nextMonth } = useMonthNavigation(value?.start);
   const [hoverDate, setHoverDate] = useState<Date | undefined>();
   const [step, setStep] = useState<'start' | 'end'>('start');
@@ -850,7 +919,7 @@ export function DateRangePicker({
         onClear={clearable && hasValue ? handleClear : undefined}
       />
       {isOpen && (
-        <Dropdown>
+        <Dropdown anchorRef={containerRef} panelRef={panelRef} isOpen={isOpen}>
           <div className="px-3 py-2 border-b border-border text-xs text-text-muted text-center">
             {step === 'start'
               ? 'Selecione a data inicial'
@@ -907,7 +976,7 @@ export function DateTimeRangePicker({
   className = '',
 }: DateTimeRangePickerProps) {
   const id = useId();
-  const { isOpen, setIsOpen, containerRef } = useDropdown();
+  const { isOpen, setIsOpen, containerRef, panelRef } = useDropdown();
   const { year, month, prevMonth, nextMonth } = useMonthNavigation(value?.start);
   const [hoverDate, setHoverDate] = useState<Date | undefined>();
   const [step, setStep] = useState<'start' | 'end'>('start');
@@ -999,7 +1068,7 @@ export function DateTimeRangePicker({
         onClear={clearable && hasValue ? handleClear : undefined}
       />
       {isOpen && (
-        <Dropdown>
+        <Dropdown anchorRef={containerRef} panelRef={panelRef} isOpen={isOpen}>
           {/* Selection hint */}
           <div className="px-3 py-2 border-b border-border text-xs text-text-muted text-center">
             {step === 'start'
@@ -1119,7 +1188,7 @@ export function TimeRangePicker({
   className = '',
 }: TimeRangePickerProps) {
   const id = useId();
-  const { isOpen, setIsOpen, containerRef } = useDropdown();
+  const { isOpen, setIsOpen, containerRef, panelRef } = useDropdown();
   const [activeTab, setActiveTab] = useState<'start' | 'end'>('start');
 
   const startParsed = value?.start ? parseTimeStr(value.start) : null;
@@ -1175,7 +1244,7 @@ export function TimeRangePicker({
         }
       />
       {isOpen && (
-        <Dropdown className="w-52">
+        <Dropdown anchorRef={containerRef} panelRef={panelRef} isOpen={isOpen} className="w-52">
           <div className="flex border-b border-border bg-surface-3/50">
             <button
               type="button"
