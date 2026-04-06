@@ -51,6 +51,9 @@ export type {
   TimeRangePickerProps,
 } from './components/date-picker/date-picker';
 
+export { MonthPicker, MonthYearPicker } from './components/month-picker/month-picker';
+export type { MonthPickerProps, MonthYearPickerProps, MonthYearValue } from './components/month-picker/month-picker';
+
 // ── Layout ─────────────────────────────────────────────────────────────────
 export { Card } from './components/card/card';
 export type { CardProps } from './components/card/card';

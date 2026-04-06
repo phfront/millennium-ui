@@ -24,6 +24,11 @@ export function DemoRenderer({ componentName }: { componentName: string }) {
   const [holdStepperVal, setHoldStepperVal] = useState(2);
   const [heatmapMonth, setHeatmapMonth] = useState(() => new Date(2026, 3, 1));
   const [monthStepIdx, setMonthStepIdx] = useState(2);
+  const [monthPickerValue, setMonthPickerValue] = useState<number | undefined>(3);
+  const [monthYearPickerValue, setMonthYearPickerValue] = useState<NexusUI.MonthYearValue | undefined>(() => ({
+    year: 2026,
+    month: 3,
+  }));
   const [inlineAmountDemo, setInlineAmountDemo] = useState(1234.56);
   const [toggleBadgePaid, setToggleBadgePaid] = useState(false);
   const [compactStatusChecked, setCompactStatusChecked] = useState(true);
@@ -680,6 +685,40 @@ export function DemoRenderer({ componentName }: { componentName: string }) {
         />
       );
     }
+    case 'MonthPicker':
+      return (
+        <div className="w-full max-w-sm space-y-4">
+          <NexusUI.MonthPicker
+            label="Mês de referência"
+            value={monthPickerValue}
+            onChange={setMonthPickerValue}
+            helperText="Valor: índice 0–11 (como Date#getMonth)."
+          />
+          <NexusUI.MonthPicker label="Com erro" error="Escolha um mês." value={undefined} onChange={() => {}} />
+          {monthPickerValue !== undefined && (
+            <p className="text-xs text-[var(--color-text-muted)]">Índice selecionado: {monthPickerValue}</p>
+          )}
+        </div>
+      );
+    case 'MonthYearPicker':
+      return (
+        <div className="w-full max-w-sm space-y-4">
+          <NexusUI.MonthYearPicker
+            label="Competência"
+            value={monthYearPickerValue}
+            onChange={setMonthYearPickerValue}
+            min={{ year: 2024, month: 0 }}
+            max={{ year: 2027, month: 11 }}
+            helperText="Limitado entre jan/2024 e dez/2027."
+          />
+          <NexusUI.MonthYearPicker label="Sem valor inicial" value={undefined} onChange={() => {}} />
+          {monthYearPickerValue && (
+            <p className="text-xs text-[var(--color-text-muted)]">
+              {monthYearPickerValue.year}-{String(monthYearPickerValue.month + 1).padStart(2, '0')}
+            </p>
+          )}
+        </div>
+      );
     case 'InlineAmountCell':
       return (
         <div className="w-36">

@@ -30,6 +30,8 @@ export const componentsRegistry: ComponentEntry[] = [
   { slug: 'date-range-picker', name: 'DateRangePicker', description: 'Seletor de intervalo de datas com dois calendários.', category: 'Atoms' },
   { slug: 'date-time-range-picker', name: 'DateTimeRangePicker', description: 'Seletor de intervalo com data e hora de início/fim.', category: 'Atoms' },
   { slug: 'time-range-picker', name: 'TimeRangePicker', description: 'Seletor de intervalo de horários com abas início/fim.', category: 'Atoms' },
+  { slug: 'month-picker', name: 'MonthPicker', description: 'Seletor de mês (índice 0–11).', category: 'Atoms' },
+  { slug: 'month-year-picker', name: 'MonthYearPicker', description: 'Seletor de mês e ano com navegação por ano.', category: 'Atoms' },
   // Layout
   { slug: 'card', name: 'Card', description: 'Container com Header, Body e Footer.', category: 'Layout' },
   { slug: 'page-header', name: 'PageHeader', description: 'Cabeçalho de página com título e ações.', category: 'Layout' },
