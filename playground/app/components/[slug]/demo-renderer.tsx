@@ -10,6 +10,16 @@ export function DemoRenderer({ componentName }: { componentName: string }) {
   const [selectValue, setSelectValue] = useState<string>('');
   const [multiSelectValue, setMultiSelectValue] = useState<string[]>([]);
   const [dateValue, setDateValue] = useState<Date | undefined>();
+  const [dateLockedToMonth, setDateLockedToMonth] = useState<Date | undefined>();
+  const [dateTimeLockedToMonth, setDateTimeLockedToMonth] = useState<Date | undefined>();
+  const [dateRangeLockedToMonth, setDateRangeLockedToMonth] = useState<NexusUI.DateRange>({
+    start: undefined,
+    end: undefined,
+  });
+  const [dateTimeRangeLockedToMonth, setDateTimeRangeLockedToMonth] = useState<NexusUI.DateRange>({
+    start: undefined,
+    end: undefined,
+  });
   const [timeValue, setTimeValue] = useState<string | undefined>();
   const [dateTimeValue, setDateTimeValue] = useState<Date | undefined>();
   const [dateRangeValue, setDateRangeValue] = useState<NexusUI.DateRange>({ start: undefined, end: undefined });
@@ -499,6 +509,13 @@ export function DemoRenderer({ componentName }: { componentName: string }) {
             value={new Date()}
             onChange={() => {}}
           />
+          <NexusUI.DatePicker
+            label="Travado em abril/2026"
+            lockToMonthYear={{ year: 2026, month: 3 }}
+            value={dateLockedToMonth}
+            onChange={setDateLockedToMonth}
+            helperText="Sem mudar de mês; só escolhe o dia."
+          />
           {dateValue && (
             <p className="text-xs text-[var(--color-text-muted)]">
               Selecionado: {dateValue.toLocaleDateString('pt-BR')}
@@ -543,6 +560,13 @@ export function DemoRenderer({ componentName }: { componentName: string }) {
             onChange={setDateTimeValue}
             helperText="Minutos em intervalos de 30"
           />
+          <NexusUI.DateTimePicker
+            label="Data travada em abril/2026"
+            lockToMonthYear={{ year: 2026, month: 3 }}
+            value={dateTimeLockedToMonth}
+            onChange={setDateTimeLockedToMonth}
+            helperText="Calendário fixo neste mês; hora editável."
+          />
           {dateTimeValue && (
             <p className="text-xs text-[var(--color-text-muted)]">
               Selecionado: {dateTimeValue.toLocaleString('pt-BR')}
@@ -557,6 +581,13 @@ export function DemoRenderer({ componentName }: { componentName: string }) {
             label="Período da viagem"
             value={dateRangeValue}
             onChange={setDateRangeValue}
+          />
+          <NexusUI.DateRangePicker
+            label="Intervalo só em abril/2026"
+            lockToMonthYear={{ year: 2026, month: 3 }}
+            value={dateRangeLockedToMonth}
+            onChange={setDateRangeLockedToMonth}
+            helperText="Um calendário; início e fim no mesmo mês."
           />
           {(dateRangeValue.start ?? dateRangeValue.end) && (
             <p className="text-xs text-[var(--color-text-muted)]">
@@ -574,6 +605,14 @@ export function DemoRenderer({ componentName }: { componentName: string }) {
             value={dateTimeRangeValue}
             onChange={setDateTimeRangeValue}
             minuteStep={15}
+          />
+          <NexusUI.DateTimeRangePicker
+            label="Datas só em abril/2026"
+            lockToMonthYear={{ year: 2026, month: 3 }}
+            value={dateTimeRangeLockedToMonth}
+            onChange={setDateTimeRangeLockedToMonth}
+            minuteStep={15}
+            helperText="Um calendário para o intervalo de datas."
           />
           {(dateTimeRangeValue.start ?? dateTimeRangeValue.end) && (
             <p className="text-xs text-[var(--color-text-muted)]">

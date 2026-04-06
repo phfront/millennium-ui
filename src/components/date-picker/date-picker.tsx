@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect, useId, useCallback, useLayoutEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { ChevronLeft, ChevronRight, Calendar, Clock, X, ChevronDown } from 'lucide-react';
+import type { MonthYearValue } from '../month-picker/month-picker';
 
 // ─── Exported Types ───────────────────────────────────────────────────────────
 
@@ -20,6 +21,8 @@ export interface DatePickerProps {
   placeholder?: string;
   min?: Date;
   max?: Date;
+  /** Fixa o calendário neste mês/ano (sem setas). Combina com `min`/`max` (interseção por dia). */
+  lockToMonthYear?: MonthYearValue;
   disabled?: boolean;
   clearable?: boolean;
   className?: string;
@@ -49,6 +52,8 @@ export interface DateTimePickerProps {
   placeholder?: string;
   min?: Date;
   max?: Date;
+  /** Fixa o calendário neste mês/ano (sem setas). Combina com `min`/`max` (interseção por dia). */
+  lockToMonthYear?: MonthYearValue;
   minuteStep?: number;
   disabled?: boolean;
   clearable?: boolean;
@@ -64,6 +69,8 @@ export interface DateRangePickerProps {
   placeholder?: string;
   min?: Date;
   max?: Date;
+  /** Fixa o intervalo neste mês/ano: um único calendário, sem navegação. Combina com `min`/`max`. */
+  lockToMonthYear?: MonthYearValue;
   disabled?: boolean;
   clearable?: boolean;
   className?: string;
@@ -97,6 +104,8 @@ export interface DateTimeRangePickerProps {
   placeholder?: string;
   min?: Date;
   max?: Date;
+  /** Fixa o intervalo neste mês/ano: um único calendário, sem navegação. Combina com `min`/`max`. */
+  lockToMonthYear?: MonthYearValue;
   minuteStep?: number;
   disabled?: boolean;
   clearable?: boolean;
@@ -173,6 +182,30 @@ function isDateDisabled(date: Date, min?: Date, max?: Date): boolean {
   return false;
 }
 
+/** Intersecção entre o mês fechado e min/max (por dia civil). */
+function mergeMinMaxWithMonthLock(
+  lock: MonthYearValue,
+  min?: Date,
+  max?: Date,
+): { min?: Date; max?: Date } {
+  const lockStart = new Date(lock.year, lock.month, 1);
+  const lockEnd = new Date(lock.year, lock.month + 1, 0);
+  let effMin = lockStart;
+  let effMax = lockEnd;
+  if (min) {
+    const d = new Date(min.getFullYear(), min.getMonth(), min.getDate());
+    if (d > effMin) effMin = d;
+  }
+  if (max) {
+    const d = new Date(max.getFullYear(), max.getMonth(), max.getDate());
+    if (d < effMax) effMax = d;
+  }
+  if (effMin > effMax) {
+    return { min: lockEnd, max: lockStart };
+  }
+  return { min: effMin, max: effMax };
+}
+
 // ─── Internal Hooks ───────────────────────────────────────────────────────────
 
 function useDropdown() {
@@ -206,20 +239,35 @@ function useDropdown() {
   return { isOpen, setIsOpen, containerRef, panelRef };
 }
 
-function useMonthNavigation(initial?: Date) {
-  const base = initial ?? new Date();
-  const [year, setYear] = useState(base.getFullYear());
-  const [month, setMonth] = useState(base.getMonth());
+function useMonthNavigation(initial?: Date, lock?: MonthYearValue) {
+  const locked = lock !== undefined;
+  const init = () => {
+    if (locked) return { y: lock.year, m: lock.month };
+    const base = initial ?? new Date();
+    return { y: base.getFullYear(), m: base.getMonth() };
+  };
+  const i = init();
+  const [year, setYear] = useState(i.y);
+  const [month, setMonth] = useState(i.m);
+
+  useEffect(() => {
+    if (locked) {
+      setYear(lock.year);
+      setMonth(lock.month);
+    }
+  }, [locked, lock?.year, lock?.month]);
 
   const prevMonth = useCallback(() => {
+    if (locked) return;
     setYear((y) => (month === 0 ? y - 1 : y));
     setMonth((m) => (m === 0 ? 11 : m - 1));
-  }, [month]);
+  }, [month, locked]);
 
   const nextMonth = useCallback(() => {
+    if (locked) return;
     setYear((y) => (month === 11 ? y + 1 : y));
     setMonth((m) => (m === 11 ? 0 : m + 1));
-  }, [month]);
+  }, [month, locked]);
 
   return { year, month, prevMonth, nextMonth };
 }
@@ -412,6 +460,8 @@ interface CalendarGridProps {
   onHoverDate?: (date: Date | undefined) => void;
   onPrevMonth: () => void;
   onNextMonth: () => void;
+  /** Sem setas de mês (ex.: `lockToMonthYear`). */
+  navigationLocked?: boolean;
 }
 
 function CalendarGrid({
@@ -427,6 +477,7 @@ function CalendarGrid({
   onHoverDate,
   onPrevMonth,
   onNextMonth,
+  navigationLocked = false,
 }: CalendarGridProps) {
   const daysInMonth = getDaysInMonth(year, month);
   const firstDay = getFirstDayOfMonth(year, month);
@@ -443,26 +494,39 @@ function CalendarGrid({
   return (
     <div className="p-3 w-[280px] flex-shrink-0 select-none">
       {/* Month / Year header */}
-      <div className="flex items-center justify-between mb-3">
-        <button
-          type="button"
-          onClick={onPrevMonth}
-          aria-label="Mês anterior"
-          className="p-1.5 rounded-md text-text-muted hover:text-text-primary hover:bg-surface-3 transition-colors"
-        >
-          <ChevronLeft size={16} />
-        </button>
-        <span className="text-sm font-semibold text-text-primary">
-          {MONTHS_PT[month]} {year}
-        </span>
-        <button
-          type="button"
-          onClick={onNextMonth}
-          aria-label="Próximo mês"
-          className="p-1.5 rounded-md text-text-muted hover:text-text-primary hover:bg-surface-3 transition-colors"
-        >
-          <ChevronRight size={16} />
-        </button>
+      <div
+        className={[
+          'flex items-center mb-3',
+          navigationLocked ? 'justify-center' : 'justify-between',
+        ].join(' ')}
+      >
+        {!navigationLocked ? (
+          <>
+            <button
+              type="button"
+              onClick={onPrevMonth}
+              aria-label="Mês anterior"
+              className="p-1.5 rounded-md text-text-muted hover:text-text-primary hover:bg-surface-3 transition-colors"
+            >
+              <ChevronLeft size={16} />
+            </button>
+            <span className="text-sm font-semibold text-text-primary">
+              {MONTHS_PT[month]} {year}
+            </span>
+            <button
+              type="button"
+              onClick={onNextMonth}
+              aria-label="Próximo mês"
+              className="p-1.5 rounded-md text-text-muted hover:text-text-primary hover:bg-surface-3 transition-colors"
+            >
+              <ChevronRight size={16} />
+            </button>
+          </>
+        ) : (
+          <span className="text-sm font-semibold text-text-primary" aria-live="polite">
+            {MONTHS_PT[month]} {year}
+          </span>
+        )}
       </div>
 
       {/* Weekday headers */}
@@ -630,13 +694,18 @@ export function DatePicker({
   placeholder = 'DD/MM/AAAA',
   min,
   max,
+  lockToMonthYear,
   disabled = false,
   clearable = true,
   className = '',
 }: DatePickerProps) {
   const id = useId();
   const { isOpen, setIsOpen, containerRef, panelRef } = useDropdown();
-  const { year, month, prevMonth, nextMonth } = useMonthNavigation(value);
+  const { year, month, prevMonth, nextMonth } = useMonthNavigation(value, lockToMonthYear);
+  const merged =
+    lockToMonthYear !== undefined
+      ? mergeMinMaxWithMonthLock(lockToMonthYear, min, max)
+      : { min, max };
 
   const displayValue = value ? (
     <span className="text-text-primary">{formatDate(value)}</span>
@@ -664,14 +733,15 @@ export function DatePicker({
             year={year}
             month={month}
             selected={value}
-            min={min}
-            max={max}
+            min={merged.min}
+            max={merged.max}
             onSelect={(date) => {
               onChange?.(date);
               setIsOpen(false);
             }}
             onPrevMonth={prevMonth}
             onNextMonth={nextMonth}
+            navigationLocked={lockToMonthYear !== undefined}
           />
         </Dropdown>
       )}
@@ -757,6 +827,7 @@ export function DateTimePicker({
   placeholder = 'DD/MM/AAAA HH:MM',
   min,
   max,
+  lockToMonthYear,
   minuteStep = 1,
   disabled = false,
   clearable = true,
@@ -764,7 +835,11 @@ export function DateTimePicker({
 }: DateTimePickerProps) {
   const id = useId();
   const { isOpen, setIsOpen, containerRef, panelRef } = useDropdown();
-  const { year, month, prevMonth, nextMonth } = useMonthNavigation(value);
+  const { year, month, prevMonth, nextMonth } = useMonthNavigation(value, lockToMonthYear);
+  const merged =
+    lockToMonthYear !== undefined
+      ? mergeMinMaxWithMonthLock(lockToMonthYear, min, max)
+      : { min, max };
 
   const hours = value?.getHours() ?? 0;
   const minutes = value?.getMinutes() ?? 0;
@@ -815,11 +890,12 @@ export function DateTimePicker({
               year={year}
               month={month}
               selected={value}
-              min={min}
-              max={max}
+              min={merged.min}
+              max={merged.max}
               onSelect={handleDateSelect}
               onPrevMonth={prevMonth}
               onNextMonth={nextMonth}
+              navigationLocked={lockToMonthYear !== undefined}
             />
             <div className="border-l border-border flex flex-col justify-center">
               <div className="px-3 py-2 text-center border-b border-border">
@@ -853,18 +929,24 @@ export function DateRangePicker({
   placeholder = 'DD/MM/AAAA – DD/MM/AAAA',
   min,
   max,
+  lockToMonthYear,
   disabled = false,
   clearable = true,
   className = '',
 }: DateRangePickerProps) {
   const id = useId();
   const { isOpen, setIsOpen, containerRef, panelRef } = useDropdown();
-  const { year, month, prevMonth, nextMonth } = useMonthNavigation(value?.start);
+  const { year, month, prevMonth, nextMonth } = useMonthNavigation(value?.start, lockToMonthYear);
   const [hoverDate, setHoverDate] = useState<Date | undefined>();
   const [step, setStep] = useState<'start' | 'end'>('start');
 
   const start = value?.start;
   const end = value?.end;
+
+  const merged =
+    lockToMonthYear !== undefined
+      ? mergeMinMaxWithMonthLock(lockToMonthYear, min, max)
+      : { min, max };
 
   const rightYear = month === 11 ? year + 1 : year;
   const rightMonth = month === 11 ? 0 : month + 1;
@@ -925,33 +1007,40 @@ export function DateRangePicker({
               ? 'Selecione a data inicial'
               : `Início: ${start ? formatDate(start) : '—'} — Selecione a data final`}
           </div>
-          <div className="flex divide-x divide-border">
+          <div
+            className={[
+              lockToMonthYear !== undefined ? '' : 'flex divide-x divide-border',
+            ].join(' ')}
+          >
             <CalendarGrid
               year={year}
               month={month}
               rangeStart={start}
               rangeEnd={end}
               hoverDate={step === 'end' ? hoverDate : undefined}
-              min={min}
-              max={max}
+              min={merged.min}
+              max={merged.max}
               onSelect={handleSelect}
               onHoverDate={step === 'end' ? setHoverDate : undefined}
               onPrevMonth={prevMonth}
               onNextMonth={nextMonth}
+              navigationLocked={lockToMonthYear !== undefined}
             />
-            <CalendarGrid
-              year={rightYear}
-              month={rightMonth}
-              rangeStart={start}
-              rangeEnd={end}
-              hoverDate={step === 'end' ? hoverDate : undefined}
-              min={min}
-              max={max}
-              onSelect={handleSelect}
-              onHoverDate={step === 'end' ? setHoverDate : undefined}
-              onPrevMonth={prevMonth}
-              onNextMonth={nextMonth}
-            />
+            {lockToMonthYear === undefined ? (
+              <CalendarGrid
+                year={rightYear}
+                month={rightMonth}
+                rangeStart={start}
+                rangeEnd={end}
+                hoverDate={step === 'end' ? hoverDate : undefined}
+                min={merged.min}
+                max={merged.max}
+                onSelect={handleSelect}
+                onHoverDate={step === 'end' ? setHoverDate : undefined}
+                onPrevMonth={prevMonth}
+                onNextMonth={nextMonth}
+              />
+            ) : null}
           </div>
         </Dropdown>
       )}
@@ -970,6 +1059,7 @@ export function DateTimeRangePicker({
   placeholder = 'DD/MM/AAAA HH:MM – DD/MM/AAAA HH:MM',
   min,
   max,
+  lockToMonthYear,
   minuteStep = 1,
   disabled = false,
   clearable = true,
@@ -977,13 +1067,18 @@ export function DateTimeRangePicker({
 }: DateTimeRangePickerProps) {
   const id = useId();
   const { isOpen, setIsOpen, containerRef, panelRef } = useDropdown();
-  const { year, month, prevMonth, nextMonth } = useMonthNavigation(value?.start);
+  const { year, month, prevMonth, nextMonth } = useMonthNavigation(value?.start, lockToMonthYear);
   const [hoverDate, setHoverDate] = useState<Date | undefined>();
   const [step, setStep] = useState<'start' | 'end'>('start');
   const [activeTab, setActiveTab] = useState<'start' | 'end'>('start');
 
   const start = value?.start;
   const end = value?.end;
+
+  const merged =
+    lockToMonthYear !== undefined
+      ? mergeMinMaxWithMonthLock(lockToMonthYear, min, max)
+      : { min, max };
 
   const rightYear = month === 11 ? year + 1 : year;
   const rightMonth = month === 11 ? 0 : month + 1;
@@ -1076,34 +1171,40 @@ export function DateTimeRangePicker({
               : `Início: ${start ? formatDateTime(start) : '—'} — Selecione a data final`}
           </div>
 
-          {/* Dual calendars */}
-          <div className="flex divide-x divide-border">
+          <div
+            className={[
+              lockToMonthYear !== undefined ? '' : 'flex divide-x divide-border',
+            ].join(' ')}
+          >
             <CalendarGrid
               year={year}
               month={month}
               rangeStart={start}
               rangeEnd={end}
               hoverDate={step === 'end' ? hoverDate : undefined}
-              min={min}
-              max={max}
+              min={merged.min}
+              max={merged.max}
               onSelect={handleDateSelect}
               onHoverDate={step === 'end' ? setHoverDate : undefined}
               onPrevMonth={prevMonth}
               onNextMonth={nextMonth}
+              navigationLocked={lockToMonthYear !== undefined}
             />
-            <CalendarGrid
-              year={rightYear}
-              month={rightMonth}
-              rangeStart={start}
-              rangeEnd={end}
-              hoverDate={step === 'end' ? hoverDate : undefined}
-              min={min}
-              max={max}
-              onSelect={handleDateSelect}
-              onHoverDate={step === 'end' ? setHoverDate : undefined}
-              onPrevMonth={prevMonth}
-              onNextMonth={nextMonth}
-            />
+            {lockToMonthYear === undefined ? (
+              <CalendarGrid
+                year={rightYear}
+                month={rightMonth}
+                rangeStart={start}
+                rangeEnd={end}
+                hoverDate={step === 'end' ? hoverDate : undefined}
+                min={merged.min}
+                max={merged.max}
+                onSelect={handleDateSelect}
+                onHoverDate={step === 'end' ? setHoverDate : undefined}
+                onPrevMonth={prevMonth}
+                onNextMonth={nextMonth}
+              />
+            ) : null}
           </div>
 
           {/* Time tabs */}
