@@ -22,6 +22,8 @@ export const componentsRegistry: ComponentEntry[] = [
   { slug: 'avatar', name: 'Avatar', description: 'Foto de perfil com fallback de iniciais.', category: 'Atoms' },
   { slug: 'icon', name: 'Icon', description: 'Wrapper dinâmico sobre ícones Lucide.', category: 'Atoms' },
   { slug: 'spinner', name: 'Spinner', description: 'Indicador de carregamento animado.', category: 'Atoms' },
+  { slug: 'checkbox', name: 'Checkbox', description: 'Caixa de seleção (múltipla escolha) acessível.', category: 'Atoms' },
+  { slug: 'radio', name: 'Radio', description: 'Botão de rádio (escolha única) acessível.', category: 'Atoms' },
   { slug: 'switch', name: 'Switch', description: 'Toggle booleano acessível.', category: 'Atoms' },
   { slug: 'divider', name: 'Divider', description: 'Linha separadora horizontal ou vertical.', category: 'Atoms' },
   { slug: 'date-picker', name: 'DatePicker', description: 'Seletor de data com calendário interativo.', category: 'Atoms' },

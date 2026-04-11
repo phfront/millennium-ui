@@ -8,6 +8,12 @@ export type { InputProps, InputType } from './components/input/input';
 export { Textarea } from './components/textarea/textarea';
 export type { TextareaProps } from './components/textarea/textarea';
 
+export { Checkbox } from './components/checkbox/checkbox';
+export type { CheckboxProps } from './components/checkbox/checkbox';
+
+export { Radio } from './components/radio/radio';
+export type { RadioProps } from './components/radio/radio';
+
 export { Select } from './components/select/select';
 export type { SelectProps, SelectOption } from './components/select/select';
 

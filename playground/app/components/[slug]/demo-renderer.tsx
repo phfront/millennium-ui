@@ -805,6 +805,36 @@ export function DemoRenderer({ componentName }: { componentName: string }) {
           Checkbox compacto
         </label>
       );
+    case 'Checkbox':
+      return (
+        <div className="flex flex-col gap-4">
+           <label className="flex items-center gap-2 text-sm text-[var(--color-text-primary)] cursor-pointer">
+              <NexusUI.Checkbox checked={isChecked} onCheckedChange={setIsChecked} />
+              Aceito os termos e condições
+           </label>
+           <label className="flex items-center gap-2 text-sm text-[var(--color-text-primary)] cursor-pointer">
+              <NexusUI.Checkbox checked disabled />
+              Desabilitado Marcado
+           </label>
+        </div>
+      );
+    case 'Radio':
+      return (
+        <div className="flex flex-col gap-4">
+           <label className="flex items-center gap-2 text-sm text-[var(--color-text-primary)] cursor-pointer">
+              <NexusUI.Radio name="demoRadio" checked={selectValue === 'opt1'} onValueChange={() => setSelectValue('opt1')} />
+              Opção 1
+           </label>
+           <label className="flex items-center gap-2 text-sm text-[var(--color-text-primary)] cursor-pointer">
+              <NexusUI.Radio name="demoRadio" checked={selectValue === 'opt2'} onValueChange={() => setSelectValue('opt2')} />
+              Opção 2
+           </label>
+           <label className="flex items-center gap-2 text-sm text-[var(--color-text-primary)] cursor-pointer">
+              <NexusUI.Radio disabled />
+              Desabilitado
+           </label>
+        </div>
+      );
     default:
       return (
         <div className="text-[var(--color-text-secondary)] flex items-center gap-2">
