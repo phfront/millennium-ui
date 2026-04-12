@@ -73,6 +73,14 @@ export type { EmptyStateProps } from './components/empty-state/empty-state';
 export { Tabs } from './components/tabs/tabs';
 export type { TabsProps, TabsListProps, TabsTriggerProps, TabsContentProps } from './components/tabs/tabs';
 
+export { Accordion } from './components/accordion/accordion';
+export type {
+  AccordionProps,
+  AccordionItemProps,
+  AccordionTriggerProps,
+  AccordionContentProps,
+} from './components/accordion/accordion';
+
 export { Skeleton } from './components/skeleton/skeleton';
 export type { SkeletonProps, SkeletonVariant } from './components/skeleton/skeleton';
 

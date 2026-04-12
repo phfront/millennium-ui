@@ -835,6 +835,58 @@ export function DemoRenderer({ componentName }: { componentName: string }) {
            </label>
         </div>
       );
+    case 'Accordion':
+      return (
+        <div className="w-full max-w-md space-y-4">
+          <NexusUI.Accordion type="single" defaultValue="item-1">
+            <NexusUI.Accordion.Item value="item-1">
+              <NexusUI.Accordion.Trigger>O que é o Millennium Nexus?</NexusUI.Accordion.Trigger>
+              <NexusUI.Accordion.Content>
+                <p className="text-sm text-[var(--color-text-secondary)]">
+                  O Millennium Nexus é um ecossistema de produtividade pessoal que integra gestão de aprendizado, 
+                  finanças, saúde e muito mais em uma única plataforma coesa.
+                </p>
+              </NexusUI.Accordion.Content>
+            </NexusUI.Accordion.Item>
+            <NexusUI.Accordion.Item value="item-2">
+              <NexusUI.Accordion.Trigger>Como funciona o sistema de módulos?</NexusUI.Accordion.Trigger>
+              <NexusUI.Accordion.Content>
+                <p className="text-sm text-[var(--color-text-secondary)]">
+                  Cada módulo representa uma área da sua vida (Aprendizado, Finanças, Saúde). 
+                  Dentro de cada módulo você pode criar planos, acompanhar métricas e organizar seu progresso.
+                </p>
+              </NexusUI.Accordion.Content>
+            </NexusUI.Accordion.Item>
+            <NexusUI.Accordion.Item value="item-3">
+              <NexusUI.Accordion.Trigger>Posso usar offline?</NexusUI.Accordion.Trigger>
+              <NexusUI.Accordion.Content>
+                <p className="text-sm text-[var(--color-text-secondary)]">
+                  Sim! O Millennium Nexus possui suporte a PWA, permitindo que você acesse 
+                  e edite seus dados mesmo sem conexão com internet.
+                </p>
+              </NexusUI.Accordion.Content>
+            </NexusUI.Accordion.Item>
+          </NexusUI.Accordion>
+
+          <div className="pt-4 border-t border-[var(--color-border)]">
+            <p className="text-xs text-[var(--color-text-muted)] mb-3">Modo múltiplo (vários itens abertos):</p>
+            <NexusUI.Accordion type="multiple" defaultValue={['sec-1']}>
+              <NexusUI.Accordion.Item value="sec-1">
+                <NexusUI.Accordion.Trigger>Seção 1</NexusUI.Accordion.Trigger>
+                <NexusUI.Accordion.Content>
+                  <p className="text-sm text-[var(--color-text-secondary)]">Conteúdo da primeira seção.</p>
+                </NexusUI.Accordion.Content>
+              </NexusUI.Accordion.Item>
+              <NexusUI.Accordion.Item value="sec-2">
+                <NexusUI.Accordion.Trigger>Seção 2</NexusUI.Accordion.Trigger>
+                <NexusUI.Accordion.Content>
+                  <p className="text-sm text-[var(--color-text-secondary)]">Conteúdo da segunda seção.</p>
+                </NexusUI.Accordion.Content>
+              </NexusUI.Accordion.Item>
+            </NexusUI.Accordion>
+          </div>
+        </div>
+      );
     default:
       return (
         <div className="text-[var(--color-text-secondary)] flex items-center gap-2">
