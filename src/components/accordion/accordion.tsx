@@ -32,7 +32,7 @@ function useAccordion() {
   return context;
 }
 
-function useAccordionItem() {
+export function useAccordionItem() {
   const context = useContext(AccordionItemContext);
   if (!context) {
     throw new Error('AccordionItem components must be used within <Accordion.Item>');
@@ -200,11 +200,36 @@ export function AccordionContent({ children, className = '' }: AccordionContentP
   );
 }
 
+// --- Custom Trigger Component ---
+
+export interface AccordionCustomTriggerProps {
+  children: (props: { isExpanded: boolean; toggle: () => void }) => ReactNode;
+  className?: string;
+}
+
+export function AccordionCustomTrigger({ children, className = '' }: AccordionCustomTriggerProps) {
+  const { isExpanded, toggle, triggerId, contentId } = useAccordionItem();
+
+  return (
+    <button
+      type="button"
+      id={triggerId}
+      aria-controls={contentId}
+      aria-expanded={isExpanded}
+      onClick={toggle}
+      className={['w-full text-left cursor-pointer', className].join(' ')}
+    >
+      {children({ isExpanded, toggle })}
+    </button>
+  );
+}
+
 // --- Compound Component Assignment ---
 
 Accordion.Item = AccordionItem;
 Accordion.Trigger = AccordionTrigger;
 Accordion.Content = AccordionContent;
+Accordion.CustomTrigger = AccordionCustomTrigger;
 
 // --- Exports ---
 

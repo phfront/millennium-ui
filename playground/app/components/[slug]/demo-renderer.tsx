@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import * as NexusUI from '@phfront/ui';
-import { Search, Bell, Home, Settings } from 'lucide-react';
+import { Search, Bell, Home, Settings, User, Shield, ChevronDown, Plus, CheckCheck, Edit, Trash2 } from 'lucide-react';
 
 export function DemoRenderer({ componentName }: { componentName: string }) {
   const [isChecked, setIsChecked] = useState(false);
@@ -837,39 +837,407 @@ export function DemoRenderer({ componentName }: { componentName: string }) {
       );
     case 'Accordion':
       return (
-        <div className="w-full max-w-md space-y-4">
-          <NexusUI.Accordion type="single" defaultValue="item-1">
-            <NexusUI.Accordion.Item value="item-1">
-              <NexusUI.Accordion.Trigger>O que é o Millennium Nexus?</NexusUI.Accordion.Trigger>
-              <NexusUI.Accordion.Content>
-                <p className="text-sm text-[var(--color-text-secondary)]">
-                  O Millennium Nexus é um ecossistema de produtividade pessoal que integra gestão de aprendizado, 
-                  finanças, saúde e muito mais em uma única plataforma coesa.
-                </p>
-              </NexusUI.Accordion.Content>
-            </NexusUI.Accordion.Item>
-            <NexusUI.Accordion.Item value="item-2">
-              <NexusUI.Accordion.Trigger>Como funciona o sistema de módulos?</NexusUI.Accordion.Trigger>
-              <NexusUI.Accordion.Content>
-                <p className="text-sm text-[var(--color-text-secondary)]">
-                  Cada módulo representa uma área da sua vida (Aprendizado, Finanças, Saúde). 
-                  Dentro de cada módulo você pode criar planos, acompanhar métricas e organizar seu progresso.
-                </p>
-              </NexusUI.Accordion.Content>
-            </NexusUI.Accordion.Item>
-            <NexusUI.Accordion.Item value="item-3">
-              <NexusUI.Accordion.Trigger>Posso usar offline?</NexusUI.Accordion.Trigger>
-              <NexusUI.Accordion.Content>
-                <p className="text-sm text-[var(--color-text-secondary)]">
-                  Sim! O Millennium Nexus possui suporte a PWA, permitindo que você acesse 
-                  e edite seus dados mesmo sem conexão com internet.
-                </p>
-              </NexusUI.Accordion.Content>
-            </NexusUI.Accordion.Item>
-          </NexusUI.Accordion>
+        <div className="w-full max-w-md space-y-6">
+          {/* Exemplo 1: Padrão com Trigger padrão */}
+          <div className="space-y-2">
+            <p className="text-xs text-[var(--color-text-muted)] font-medium uppercase tracking-wide">Padrão (Trigger com Chevron)</p>
+            <NexusUI.Accordion type="single" defaultValue="item-1">
+              <NexusUI.Accordion.Item value="item-1">
+                <NexusUI.Accordion.Trigger>O que é o Millennium Nexus?</NexusUI.Accordion.Trigger>
+                <NexusUI.Accordion.Content>
+                  <p className="text-sm text-[var(--color-text-secondary)]">
+                    O Millennium Nexus é um ecossistema de produtividade pessoal que integra gestão de aprendizado, 
+                    finanças, saúde e muito mais em uma única plataforma coesa.
+                  </p>
+                </NexusUI.Accordion.Content>
+              </NexusUI.Accordion.Item>
+              <NexusUI.Accordion.Item value="item-2">
+                <NexusUI.Accordion.Trigger>Como funciona o sistema de módulos?</NexusUI.Accordion.Trigger>
+                <NexusUI.Accordion.Content>
+                  <p className="text-sm text-[var(--color-text-secondary)]">
+                    Cada módulo representa uma área da sua vida (Aprendizado, Finanças, Saúde). 
+                    Dentro de cada módulo você pode criar planos, acompanhar métricas e organizar seu progresso.
+                  </p>
+                </NexusUI.Accordion.Content>
+              </NexusUI.Accordion.Item>
+            </NexusUI.Accordion>
+          </div>
 
+          {/* Exemplo 2: Trigger customizado com slot (children custom) */}
+          <div className="space-y-2">
+            <p className="text-xs text-[var(--color-text-muted)] font-medium uppercase tracking-wide">Trigger com Slot Customizado</p>
+            <NexusUI.Accordion type="single">
+              <NexusUI.Accordion.Item value="custom-1">
+                <NexusUI.Accordion.Trigger>
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-brand-primary/20 flex items-center justify-center">
+                      <Settings size={16} className="text-brand-primary" />
+                    </div>
+                    <div className="flex-1 text-left">
+                      <p className="font-semibold text-text-primary">Configurações Avançadas</p>
+                      <p className="text-xs text-text-muted">Gerencie preferências do sistema</p>
+                    </div>
+                    <NexusUI.Badge variant="info">Novo</NexusUI.Badge>
+                  </div>
+                </NexusUI.Accordion.Trigger>
+                <NexusUI.Accordion.Content>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-text-secondary">Notificações</span>
+                      <NexusUI.Switch checked={true} onChange={() => {}} />
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-text-secondary">Tema Escuro</span>
+                      <NexusUI.Switch checked={true} onChange={() => {}} />
+                    </div>
+                  </div>
+                </NexusUI.Accordion.Content>
+              </NexusUI.Accordion.Item>
+              <NexusUI.Accordion.Item value="custom-2">
+                <NexusUI.Accordion.Trigger>
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-success/20 flex items-center justify-center">
+                      <User size={16} className="text-success" />
+                    </div>
+                    <div className="flex-1 text-left">
+                      <p className="font-semibold text-text-primary">Perfil do Usuário</p>
+                      <p className="text-xs text-text-muted">Atualize suas informações</p>
+                    </div>
+                  </div>
+                </NexusUI.Accordion.Trigger>
+                <NexusUI.Accordion.Content>
+                  <div className="space-y-2">
+                    <NexusUI.Input placeholder="Nome completo" />
+                    <NexusUI.Input placeholder="Email" type="email" />
+                    <NexusUI.Button size="sm" variant="primary" className="w-full">Salvar</NexusUI.Button>
+                  </div>
+                </NexusUI.Accordion.Content>
+              </NexusUI.Accordion.Item>
+            </NexusUI.Accordion>
+          </div>
+
+          {/* Exemplo 3: CustomTrigger com controle total via render prop */}
+          <div className="space-y-2">
+            <p className="text-xs text-[var(--color-text-muted)] font-medium uppercase tracking-wide">CustomTrigger (Controle Total)</p>
+            <NexusUI.Accordion type="single" defaultValue="ctrl-1">
+              <NexusUI.Accordion.Item value="ctrl-1">
+                <NexusUI.Accordion.CustomTrigger>
+                  {({ isExpanded, toggle }) => (
+                    <div className={[
+                      'flex items-center justify-between px-4 py-3 rounded-lg border transition-all duration-200',
+                      isExpanded 
+                        ? 'bg-brand-primary/10 border-brand-primary/30' 
+                        : 'bg-surface-3 border-border hover:border-brand-primary/50'
+                    ].join(' ')}>
+                      <div className="flex items-center gap-3">
+                        <div className={[
+                          'w-10 h-10 rounded-full flex items-center justify-center transition-colors',
+                          isExpanded ? 'bg-brand-primary text-white' : 'bg-surface-2 text-text-muted'
+                        ].join(' ')}>
+                          <Bell size={20} />
+                        </div>
+                        <div>
+                          <p className="font-semibold text-text-primary">Notificações</p>
+                          <p className="text-xs text-text-muted">{isExpanded ? 'Clique para recolher' : 'Clique para expandir'}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <NexusUI.Badge variant={isExpanded ? 'success' : 'muted'}>
+                          {isExpanded ? 'Aberto' : 'Fechado'}
+                        </NexusUI.Badge>
+                        <ChevronDown 
+                          size={20} 
+                          className={['transition-transform duration-300', isExpanded ? 'rotate-180' : ''].join(' ')} 
+                        />
+                      </div>
+                    </div>
+                  )}
+                </NexusUI.Accordion.CustomTrigger>
+                <NexusUI.Accordion.Content>
+                  <div className="space-y-3">
+                    <p className="text-sm text-text-secondary">Configure como deseja receber alertas:</p>
+                    <div className="space-y-2">
+                      <label className="flex items-center gap-2 text-sm text-text-primary cursor-pointer">
+                        <NexusUI.Checkbox checked={true} onCheckedChange={() => {}} />
+                        Email
+                      </label>
+                      <label className="flex items-center gap-2 text-sm text-text-primary cursor-pointer">
+                        <NexusUI.Checkbox checked={false} onCheckedChange={() => {}} />
+                        Push
+                      </label>
+                      <label className="flex items-center gap-2 text-sm text-text-primary cursor-pointer">
+                        <NexusUI.Checkbox checked={true} onCheckedChange={() => {}} />
+                        SMS
+                      </label>
+                    </div>
+                  </div>
+                </NexusUI.Accordion.Content>
+              </NexusUI.Accordion.Item>
+
+              <NexusUI.Accordion.Item value="ctrl-2">
+                <NexusUI.Accordion.CustomTrigger>
+                  {({ isExpanded }) => (
+                    <div className={[
+                      'flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200',
+                      isExpanded ? 'bg-surface-3' : 'bg-surface-2 hover:bg-surface-3'
+                    ].join(' ')}>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2">
+                          <Shield size={18} className={isExpanded ? 'text-brand-primary' : 'text-text-muted'} />
+                          <span className="font-semibold text-text-primary">Segurança</span>
+                        </div>
+                        <div className="mt-2 h-1 bg-surface-1 rounded-full overflow-hidden">
+                          <div 
+                            className="h-full bg-brand-primary transition-all duration-500"
+                            style={{ width: isExpanded ? '100%' : '60%' }}
+                          />
+                        </div>
+                      </div>
+                      <ChevronDown 
+                        size={18} 
+                        className={['text-text-muted transition-transform duration-300', isExpanded ? 'rotate-180' : ''].join(' ')} 
+                      />
+                    </div>
+                  )}
+                </NexusUI.Accordion.CustomTrigger>
+                <NexusUI.Accordion.Content>
+                  <div className="space-y-2">
+                    <NexusUI.Input type="password" placeholder="Senha atual" />
+                    <NexusUI.Input type="password" placeholder="Nova senha" />
+                    <div className="flex gap-2">
+                      <NexusUI.Button variant="outline" size="sm" className="flex-1">Cancelar</NexusUI.Button>
+                      <NexusUI.Button variant="primary" size="sm" className="flex-1">Atualizar</NexusUI.Button>
+                    </div>
+                  </div>
+                </NexusUI.Accordion.Content>
+              </NexusUI.Accordion.Item>
+            </NexusUI.Accordion>
+          </div>
+
+          {/* Exemplo 4: Input no header (stopPropagation) */}
+          <div className="space-y-2">
+            <p className="text-xs text-[var(--color-text-muted)] font-medium uppercase tracking-wide">Input no Header (Sem Trigger)</p>
+            <NexusUI.Accordion type="single">
+              <NexusUI.Accordion.Item value="input-header">
+                <NexusUI.Accordion.Trigger>
+                  <div className="flex items-center gap-3 w-full pr-4">
+                    <div className="w-8 h-8 rounded-full bg-info/20 flex items-center justify-center shrink-0">
+                      <Search size={16} className="text-info" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-text-primary text-left">Busca Rápida</p>
+                    </div>
+                    {/* Input que NÃO dispara o accordion */}
+                    <div 
+                      className="w-48 shrink-0"
+                      onClick={(e) => e.stopPropagation()}
+                      onPointerDown={(e) => e.stopPropagation()}
+                    >
+                      <NexusUI.Input 
+                        placeholder="Digite para buscar..."
+                        className="h-8 text-sm"
+                        onClick={(e) => e.stopPropagation()}
+                        onFocus={(e) => e.stopPropagation()}
+                      />
+                    </div>
+                  </div>
+                </NexusUI.Accordion.Trigger>
+                <NexusUI.Accordion.Content>
+                  <div className="space-y-2">
+                    <p className="text-sm text-text-secondary">Resultados da busca:</p>
+                    <div className="space-y-1">
+                      <div className="p-2 rounded bg-surface-1 text-sm text-text-primary hover:bg-surface-2 cursor-pointer transition-colors">
+                        📄 Documentação do API
+                      </div>
+                      <div className="p-2 rounded bg-surface-1 text-sm text-text-primary hover:bg-surface-2 cursor-pointer transition-colors">
+                        🎨 Design Tokens
+                      </div>
+                      <div className="p-2 rounded bg-surface-1 text-sm text-text-primary hover:bg-surface-2 cursor-pointer transition-colors">
+                        ⚙️ Configurações
+                      </div>
+                    </div>
+                  </div>
+                </NexusUI.Accordion.Content>
+              </NexusUI.Accordion.Item>
+
+              <NexusUI.Accordion.Item value="editable-title">
+                <NexusUI.Accordion.Trigger>
+                  <div className="flex items-center gap-3 w-full pr-4">
+                    <div className="w-8 h-8 rounded-full bg-warning/20 flex items-center justify-center shrink-0">
+                      <Settings size={16} className="text-warning" />
+                    </div>
+                    <div className="flex-1 min-w-0 flex items-center gap-2">
+                      <span className="font-semibold text-text-primary">Título Editável:</span>
+                      {/* Input inline que NÃO dispara o accordion */}
+                      <div 
+                        className="flex-1 max-w-[200px]"
+                        onClick={(e) => e.stopPropagation()}
+                        onPointerDown={(e) => e.stopPropagation()}
+                      >
+                        <NexusUI.Input 
+                          placeholder="Nome da seção..."
+                          defaultValue="Minha Configuração"
+                          className="h-7 text-sm font-normal"
+                          onClick={(e) => e.stopPropagation()}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </NexusUI.Accordion.Trigger>
+                <NexusUI.Accordion.Content>
+                  <div className="space-y-3">
+                    <p className="text-sm text-text-secondary">
+                      O título acima pode ser editado sem abrir/fechar o accordion. 
+                      Clique no campo de texto e digite à vontade!
+                    </p>
+                    <div className="flex items-center justify-between p-2 rounded bg-surface-1">
+                      <span className="text-sm text-text-secondary">Habilitar salvamento automático</span>
+                      <NexusUI.Switch checked={true} onChange={() => {}} />
+                    </div>
+                  </div>
+                </NexusUI.Accordion.Content>
+              </NexusUI.Accordion.Item>
+            </NexusUI.Accordion>
+            <p className="text-xs text-text-muted">
+              💡 Dica: Use <code className="bg-surface-3 px-1 rounded">onClick=&lbrace;(e) =&gt; e.stopPropagation()&rbrace;</code> no container do input
+            </p>
+          </div>
+
+          {/* Exemplo 5: Icon Button com Toast (stopPropagation) */}
+          <div className="space-y-2">
+            <p className="text-xs text-[var(--color-text-muted)] font-medium uppercase tracking-wide">Icon Button + Toast (Sem Trigger)</p>
+            <NexusUI.Accordion type="single">
+              <NexusUI.Accordion.Item value="toast-actions">
+                <NexusUI.Accordion.Trigger>
+                  <div className="flex items-center gap-3 w-full pr-4">
+                    <div className="w-8 h-8 rounded-full bg-success/20 flex items-center justify-center shrink-0">
+                      <Bell size={16} className="text-success" />
+                    </div>
+                    <div className="flex-1 min-w-0 text-left">
+                      <p className="font-semibold text-text-primary">Notificações e Ações</p>
+                      <p className="text-xs text-text-muted">Ícones interativos no header</p>
+                    </div>
+                    {/* Botões de ação que NÃO disparam o accordion */}
+                    <div className="flex items-center gap-1 shrink-0">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toast.success('Adicionado!', 'Nova notificação criada com sucesso.');
+                        }}
+                        className="w-8 h-8 rounded-full bg-surface-3 hover:bg-brand-primary/20 flex items-center justify-center transition-colors"
+                        title="Adicionar notificação"
+                      >
+                        <Plus size={16} className="text-brand-primary" />
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toast.info('Marcar lida', 'Todas as notificações foram marcadas como lidas.');
+                        }}
+                        className="w-8 h-8 rounded-full bg-surface-3 hover:bg-info/20 flex items-center justify-center transition-colors"
+                        title="Marcar todas como lidas"
+                      >
+                        <CheckCheck size={16} className="text-info" />
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toast.error('Configurações', 'Abrir configurações de notificação.');
+                        }}
+                        className="w-8 h-8 rounded-full bg-surface-3 hover:bg-warning/20 flex items-center justify-center transition-colors"
+                        title="Configurações"
+                      >
+                        <Settings size={16} className="text-warning" />
+                      </button>
+                    </div>
+                  </div>
+                </NexusUI.Accordion.Trigger>
+                <NexusUI.Accordion.Content>
+                  <div className="space-y-3">
+                    <p className="text-sm text-text-secondary">Lista de notificações:</p>
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2 p-2 rounded bg-surface-1">
+                        <div className="w-2 h-2 rounded-full bg-brand-primary" />
+                        <span className="text-sm text-text-primary flex-1">Nova tarefa atribuída</span>
+                        <span className="text-xs text-text-muted">2 min</span>
+                      </div>
+                      <div className="flex items-center gap-2 p-2 rounded bg-surface-1">
+                        <div className="w-2 h-2 rounded-full bg-success" />
+                        <span className="text-sm text-text-primary flex-1">Plano de estudo concluído</span>
+                        <span className="text-xs text-text-muted">1h</span>
+                      </div>
+                      <div className="flex items-center gap-2 p-2 rounded bg-surface-1 opacity-60">
+                        <div className="w-2 h-2 rounded-full bg-text-muted" />
+                        <span className="text-sm text-text-secondary flex-1 line-through">Lembrete de reunião</span>
+                        <span className="text-xs text-text-muted">3h</span>
+                      </div>
+                    </div>
+                  </div>
+                </NexusUI.Accordion.Content>
+              </NexusUI.Accordion.Item>
+
+              <NexusUI.Accordion.Item value="task-actions">
+                <NexusUI.Accordion.Trigger>
+                  <div className="flex items-center gap-3 w-full pr-4">
+                    <div className="w-8 h-8 rounded-full bg-brand-primary/20 flex items-center justify-center shrink-0">
+                      <NexusUI.Checkbox checked={true} onCheckedChange={() => {}} />
+                    </div>
+                    <div className="flex-1 min-w-0 text-left">
+                      <p className="font-semibold text-text-primary">Tarefa com Ações</p>
+                      <p className="text-xs text-text-muted">Botões de ação rápida</p>
+                    </div>
+                    {/* Ações que não disparam */}
+                    <div 
+                      className="flex items-center gap-1 shrink-0"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <NexusUI.Button 
+                        size="sm" 
+                        variant="ghost"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toast.success('Editar', 'Modo edição ativado');
+                        }}
+                      >
+                        <Edit size={14} className="mr-1" /> Editar
+                      </NexusUI.Button>
+                      <NexusUI.Button 
+                        size="sm" 
+                        variant="ghost"
+                        className="text-danger hover:text-danger"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toast.error('Excluído', 'Tarefa removida');
+                        }}
+                      >
+                        <Trash2 size={14} className="mr-1" /> Excluir
+                      </NexusUI.Button>
+                    </div>
+                  </div>
+                </NexusUI.Accordion.Trigger>
+                <NexusUI.Accordion.Content>
+                  <div className="space-y-2">
+                    <p className="text-sm text-text-secondary">Detalhes da tarefa:</p>
+                    <NexusUI.Textarea 
+                      defaultValue="Revisar documentação do projeto antes da reunião de amanhã."
+                      rows={3}
+                    />
+                    <div className="flex gap-2">
+                      <NexusUI.Button size="sm" variant="primary">Salvar</NexusUI.Button>
+                      <NexusUI.Button size="sm" variant="outline">Cancelar</NexusUI.Button>
+                    </div>
+                  </div>
+                </NexusUI.Accordion.Content>
+              </NexusUI.Accordion.Item>
+            </NexusUI.Accordion>
+            <p className="text-xs text-text-muted">
+              🖱️ Clique nos ícones para ver toasts • Clique na área vazia para expandir/colapsar
+            </p>
+          </div>
+
+          {/* Exemplo 6: Modo múltiplo */}
           <div className="pt-4 border-t border-[var(--color-border)]">
-            <p className="text-xs text-[var(--color-text-muted)] mb-3">Modo múltiplo (vários itens abertos):</p>
+            <p className="text-xs text-[var(--color-text-muted)] font-medium uppercase tracking-wide mb-3">Modo Múltiplo</p>
             <NexusUI.Accordion type="multiple" defaultValue={['sec-1']}>
               <NexusUI.Accordion.Item value="sec-1">
                 <NexusUI.Accordion.Trigger>Seção 1</NexusUI.Accordion.Trigger>
