@@ -64,7 +64,9 @@ export function Accordion({
 
   const normalizeValue = (val: string | string[] | undefined): string[] => {
     if (val === undefined) return [];
-    return Array.isArray(val) ? val : [val];
+    if (Array.isArray(val)) return val;
+    if (val === '') return [];
+    return [val];
   };
 
   const [uncontrolledValues, setUncontrolledValues] = useState<string[]>(() =>
@@ -171,9 +173,11 @@ export function AccordionTrigger({ children, className = '' }: AccordionTriggerP
 export interface AccordionContentProps {
   children: ReactNode;
   className?: string;
+  /** Classes no bloco interno (padding em volta do `children`). */
+  innerClassName?: string;
 }
 
-export function AccordionContent({ children, className = '' }: AccordionContentProps) {
+export function AccordionContent({ children, className = '', innerClassName = '' }: AccordionContentProps) {
   const { isExpanded, triggerId, contentId } = useAccordionItem();
 
   return (
@@ -188,11 +192,14 @@ export function AccordionContent({ children, className = '' }: AccordionContentP
       ].join(' ')}
     >
       <div className="overflow-hidden">
-        <div className={[
-          'px-4 py-3 border-t border-border',
-          'transition-opacity duration-200 ease-out',
-          isExpanded ? 'opacity-100' : 'opacity-0',
-        ].join(' ')}>
+        <div
+          className={[
+            'border-t border-border px-4 py-3',
+            'transition-opacity duration-200 ease-out',
+            isExpanded ? 'opacity-100' : 'opacity-0',
+            innerClassName,
+          ].join(' ')}
+        >
           {children}
         </div>
       </div>
