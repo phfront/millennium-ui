@@ -10,6 +10,8 @@ export interface HoldStepperProps extends Omit<React.HTMLAttributes<HTMLDivEleme
   step?: number;
   disabled?: boolean;
   onChange: (value: number) => void;
+  /** Quando false, oculta a barra de progresso inferior (ex.: cartão compacto / widget). */
+  showProgressBar?: boolean;
 }
 
 const HOLD_BEFORE_REPEAT_MS = 450;
@@ -20,7 +22,20 @@ const btnClass =
   'disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-colors select-none touch-manipulation';
 
 export const HoldStepper = forwardRef<HTMLDivElement, HoldStepperProps>(
-  ({ value, max, unit, step = 1, disabled = false, onChange, className = '', ...props }, ref) => {
+  (
+    {
+      value,
+      max,
+      unit,
+      step = 1,
+      disabled = false,
+      onChange,
+      showProgressBar = true,
+      className = '',
+      ...props
+    },
+    ref,
+  ) => {
     const percent = max && max > 0 ? Math.min(100, (value / max) * 100) : null;
 
     const isPressingRef = useRef(false);
@@ -126,7 +141,7 @@ export const HoldStepper = forwardRef<HTMLDivElement, HoldStepperProps>(
           </button>
         </div>
 
-        {max != null && (
+        {showProgressBar && max != null && (
           <div className="h-1.5 rounded-full bg-surface-3 overflow-hidden">
             <div
               className="h-full rounded-full bg-brand-primary transition-all duration-300"

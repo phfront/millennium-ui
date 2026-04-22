@@ -20,6 +20,9 @@ export type { SelectProps, SelectOption } from './components/select/select';
 export { Badge } from './components/badge/badge';
 export type { BadgeProps, BadgeVariant, BadgeSize } from './components/badge/badge';
 
+export { PointsBadge } from './components/points-badge/points-badge';
+export type { PointsBadgeProps } from './components/points-badge/points-badge';
+
 export { Avatar } from './components/avatar/avatar';
 export type { AvatarProps, AvatarSize } from './components/avatar/avatar';
 
