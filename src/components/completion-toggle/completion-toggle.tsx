@@ -35,7 +35,7 @@ export const CompletionToggle = forwardRef<HTMLButtonElement, CompletionTogglePr
       className={[
         'flex w-full cursor-pointer items-center justify-center font-semibold transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-60',
         compact
-          ? 'h-11 gap-2 rounded-lg px-2 text-sm'
+          ? 'mb-0.5 h-9 min-h-0 gap-1.5 rounded-lg px-2 py-1 text-xs leading-tight'
           : 'h-16 gap-3 rounded-xl text-base',
         'border-2',
         checked
@@ -48,11 +48,11 @@ export const CompletionToggle = forwardRef<HTMLButtonElement, CompletionTogglePr
       <span
         className={[
           'flex shrink-0 items-center justify-center rounded-full transition-colors',
-          compact ? 'h-6 w-6' : 'h-8 w-8',
+          compact ? 'h-5 w-5' : 'h-8 w-8',
           checked ? 'bg-success' : 'bg-surface-2',
         ].join(' ')}
       >
-        <Check size={compact ? 14 : 18} className={checked ? 'text-white' : 'text-text-muted'} />
+        <Check size={compact ? 12 : 18} className={checked ? 'text-white' : 'text-text-muted'} />
       </span>
       {checked ? labelOn : labelOff}
     </button>

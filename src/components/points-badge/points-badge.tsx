@@ -7,7 +7,7 @@ export interface PointsBadgeProps extends Omit<BadgeProps, 'children'> {
 
 /**
  * Indicador compacto de pontuação (metas / gamificação).
- * Mostra só o valor numérico; estilo alinhado ao `Badge` muted.
+ * Mostra só o valor numérico; use `variant` no pai para cor (ex.: success / danger).
  */
 export const PointsBadge = forwardRef<HTMLSpanElement, PointsBadgeProps>(
   ({ points, variant = 'muted', size = 'sm', className = '', ...props }, ref) => (
