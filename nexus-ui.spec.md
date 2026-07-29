@@ -123,7 +123,7 @@ O sistema é **dark-first**. Todas as cores devem ter variante para dark e light
 | Componente | Descrição |
 |---|---|
 | `<ModuleCard>` | Card específico do ecossistema Nexus. Exibe `icon`, `label`, `description` e `<Badge>` de status. Suporte a estado desabilitado (`Em breve`). |
-| `<DataTable>` | Tabela genérica com suporte a colunas configuráveis, estado de loading (skeletons) e estado vazio. |
+| `<DataTable>` | Tabela genérica com suporte a colunas configuráveis, estado de loading (skeletons) e estado vazio. Ordenação por coluna com `sortable` (e `sortValue` quando a chave não é o que se vê), não controlada por padrão ou controlada via `sortKey` + `onSortChange`. |
 
 ---
 
@@ -452,7 +452,7 @@ Cada página de componente deve ter obrigatoriamente:
 | `Modal` | Trigger que abre modal com Header+Body+Footer. Tamanhos (sm/md/lg) |
 | `Tooltip` | Posições (top/right/bottom/left), Conteúdo longo |
 | `ModuleCard` | Ativo, Em breve (desabilitado), Grid de múltiplos cards |
-| `DataTable` | Com dados, Estado vazio, Estado loading (skeletons) |
+| `DataTable` | Com dados, Estado vazio, Estado loading (skeletons), Ordenação por coluna |
 
 ---
 

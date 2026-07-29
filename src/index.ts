@@ -167,7 +167,12 @@ export type {
 } from './components/module-card-skeleton/module-card-skeleton';
 
 export { DataTable } from './components/data-table/data-table';
-export type { DataTableProps, DataTableColumn } from './components/data-table/data-table';
+export type {
+  DataTableProps,
+  DataTableColumn,
+  SortDirection,
+  SortValue,
+} from './components/data-table/data-table';
 
 export { ToggleMatrix } from './components/toggle-matrix/toggle-matrix';
 export type {

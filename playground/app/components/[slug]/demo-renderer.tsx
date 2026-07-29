@@ -474,12 +474,13 @@ export function DemoRenderer({ componentName }: { componentName: string }) {
     case 'DataTable':
       return (
         <div className="w-full overflow-hidden border border-[var(--color-border)] rounded-xl">
-           <NexusUI.DataTable 
+           <NexusUI.DataTable
               columns={[
-                { key: 'id', header: 'ID' },
-                { key: 'name', header: 'Nome' },
-                { key: 'role', header: 'Cargo' }
+                { key: 'id', header: 'ID', sortable: true },
+                { key: 'name', header: 'Nome', sortable: true },
+                { key: 'role', header: 'Cargo', sortable: true }
               ]}
+              defaultSortKey="name"
               data={[
                 { id: '1', name: 'João Silva', role: 'Gerente' },
                 { id: '2', name: 'Maria Souza', role: 'Diretora' },
